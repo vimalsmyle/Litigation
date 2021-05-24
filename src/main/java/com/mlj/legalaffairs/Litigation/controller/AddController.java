@@ -3,6 +3,7 @@
  */
 package com.mlj.legalaffairs.Litigation.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import org.springframework.stereotype.Controller;
@@ -90,7 +91,7 @@ public class AddController {
 
 	@RequestMapping(value = "/nomination/add", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	public @ResponseBody ResponseVO addnomination(@RequestBody RegisterRequestVO hcvo) throws ClassNotFoundException,
-			SQLException, BusinessException {
+			SQLException, BusinessException, IOException {
 		ResponseVO responsevo = new ResponseVO();
 		try {
 			 responsevo = addbo.addNomination(hcvo);

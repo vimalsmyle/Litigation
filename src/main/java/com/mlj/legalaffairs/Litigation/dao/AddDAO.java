@@ -4,6 +4,8 @@
 package com.mlj.legalaffairs.Litigation.dao;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -117,7 +119,7 @@ return connection;
 		return registerList;
 	}
 	
-	public ResponseVO addNomination(RegisterRequestVO registerRequestVO) throws SQLException{
+	public ResponseVO addNomination(RegisterRequestVO registerRequestVO) throws SQLException, IOException{
 		// TODO Auto-generated method stub
 
 		Connection con = null;
@@ -172,9 +174,9 @@ return connection;
 				XWPFDocument document = new XWPFDocument();
 				XWPFParagraph title = document.createParagraph();
 				title.setAlignment(ParagraphAlignment.CENTER);
-
+				
 				XWPFRun titleRun = title.createRun();
-				titleRun.setText("Build Your REST API with Spring");
+				titleRun.setText("Department of Legal Affairs");
 				titleRun.setColor("009933");
 				titleRun.setBold(true);
 				titleRun.setFontFamily("Courier");
@@ -183,6 +185,11 @@ return connection;
 				//https://www.baeldung.com/java-microsoft-word-with-apache-poi
 				
 //				https://www.javatpoint.com/apache-poi-word-paragraph
+				
+				FileOutputStream out = new FileOutputStream("F-"+registerRequestVO.getFileNumber()+".docx");
+				document.write(out);
+				out.close();
+				document.close();
 				
 				responsevo.setResult("Success");
 				responsevo.setMessage("Nomination created Successfully");
