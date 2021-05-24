@@ -5,6 +5,7 @@ package com.mlj.legalaffairs.Litigation.bo;
 
 import com.mlj.legalaffairs.Litigation.exceptions.BusinessException;
 import com.mlj.legalaffairs.Litigation.request.CounselRequestVO;
+import com.mlj.legalaffairs.Litigation.request.HCRequestVO;
 import com.mlj.legalaffairs.Litigation.response.ResponseVO;
 
 /**
@@ -19,6 +20,11 @@ public class AddBO {
 	}
 
 	public ResponseVO editcounsel(CounselRequestVO counselvo) throws BusinessException{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ResponseVO addNomination(HCRequestVO hcvo)  throws BusinessException{
 		// TODO Auto-generated method stub
 		return null;
 	}
