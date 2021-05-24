@@ -9,25 +9,27 @@ import java.util.List;
  * @author VmL
  *
  */
-public class RegistrarResponseVO {
+public class RegisterResponseVO {
 	
 	private long highCourtID;
 	private long catID;
-	private int fileNumber;
+	private String fileNumber;
 	private int fileYear;
 	private String filedBy;
 	private int caseTypeID;
+	private String caseType;
 	private String caseNumber;
 	private int caseYear;
-	private int frNumber;
+	private String frNumber;
 	private int frYear;
+	private int numberOfCases;
 	private String ministryName;
 	private String departmentName;
 	private String counselName;
 	private String date;
 	private String remarks;
 	
-	private List<RegistrarResponseVO> data;
+	private List<RegisterResponseVO> data;
 
 	public long getHighCourtID() {
 		return highCourtID;
@@ -37,11 +39,11 @@ public class RegistrarResponseVO {
 		this.highCourtID = highCourtID;
 	}
 
-	public int getFileNumber() {
+	public String getFileNumber() {
 		return fileNumber;
 	}
 
-	public void setFileNumber(int fileNumber) {
+	public void setFileNumber(String fileNumber) {
 		this.fileNumber = fileNumber;
 	}
 
@@ -85,11 +87,11 @@ public class RegistrarResponseVO {
 		this.caseYear = caseYear;
 	}
 
-	public int getFrNumber() {
+	public String getFrNumber() {
 		return frNumber;
 	}
 
-	public void setFrNumber(int frNumber) {
+	public void setFrNumber(String frNumber) {
 		this.frNumber = frNumber;
 	}
 
@@ -141,11 +143,11 @@ public class RegistrarResponseVO {
 		this.remarks = remarks;
 	}
 
-	public List<RegistrarResponseVO> getData() {
+	public List<RegisterResponseVO> getData() {
 		return data;
 	}
 
-	public void setData(List<RegistrarResponseVO> data) {
+	public void setData(List<RegisterResponseVO> data) {
 		this.data = data;
 	}
 
@@ -155,6 +157,22 @@ public class RegistrarResponseVO {
 
 	public void setCatID(long catID) {
 		this.catID = catID;
+	}
+
+	public String getCaseType() {
+		return caseType;
+	}
+
+	public void setCaseType(String caseType) {
+		this.caseType = caseType;
+	}
+
+	public int getNumberOfCases() {
+		return numberOfCases;
+	}
+
+	public void setNumberOfCases(int numberOfCases) {
+		this.numberOfCases = numberOfCases;
 	}
 	
 }

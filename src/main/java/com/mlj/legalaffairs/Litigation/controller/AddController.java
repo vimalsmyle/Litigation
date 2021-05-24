@@ -16,9 +16,9 @@ import com.mlj.legalaffairs.Litigation.bo.AddBO;
 import com.mlj.legalaffairs.Litigation.dao.AddDAO;
 import com.mlj.legalaffairs.Litigation.exceptions.BusinessException;
 import com.mlj.legalaffairs.Litigation.request.CounselRequestVO;
-import com.mlj.legalaffairs.Litigation.request.HCRequestVO;
+import com.mlj.legalaffairs.Litigation.request.RegisterRequestVO;
 import com.mlj.legalaffairs.Litigation.response.CounselResponseVO;
-import com.mlj.legalaffairs.Litigation.response.RegistrarResponseVO;
+import com.mlj.legalaffairs.Litigation.response.RegisterResponseVO;
 import com.mlj.legalaffairs.Litigation.response.ResponseVO;
 
 /**
@@ -78,18 +78,18 @@ public class AddController {
 		return responsevo;
 	}
 	
-	@RequestMapping(value = "/nomination/{courttype}", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody RegistrarResponseVO HighCourtRegisterdetails(@PathVariable("courttype") int courtType) throws SQLException {
+	@RequestMapping(value = "/nomination/{courttype}/{year}", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody RegisterResponseVO HighCourtRegisterdetails(@PathVariable("courttype") int courtType, @PathVariable("year") int year) throws SQLException {
 
-		RegistrarResponseVO hcresponsevo = new RegistrarResponseVO();
+		RegisterResponseVO hcresponsevo = new RegisterResponseVO();
 
-		hcresponsevo.setData(adddao.getHighCourtNominationdetails(courtType));
+		hcresponsevo.setData(adddao.getHighCourtNominationdetails(courtType, year));
 
 		return hcresponsevo;
 	}
 
 	@RequestMapping(value = "/nomination/add", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public @ResponseBody ResponseVO addnomination(@RequestBody HCRequestVO hcvo) throws ClassNotFoundException,
+	public @ResponseBody ResponseVO addnomination(@RequestBody RegisterRequestVO hcvo) throws ClassNotFoundException,
 			SQLException, BusinessException {
 		ResponseVO responsevo = new ResponseVO();
 		try {
