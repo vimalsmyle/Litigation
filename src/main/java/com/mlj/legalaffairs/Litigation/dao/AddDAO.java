@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -127,6 +128,8 @@ return connection;
 		ResponseVO responsevo = new ResponseVO();
 		LocalDate currentdate = LocalDate.now();
 		String drivename = "D:/<folder>/Drafts/"+currentdate.getYear()+"/"+currentdate.getMonth()+"/";
+		String fontColour = "000000";
+		String fileNumber = "File No: "+registerRequestVO.getFileNumber()+"/"+currentdate.getYear()+"/LIT/"+(registerRequestVO.getCourtType() == 1 ? "HC" : "CAT");
 
 		try {
 			con = getConnection();
@@ -172,19 +175,86 @@ return connection;
 				if (!directory.exists()) { directory.mkdirs(); }
 				
 				XWPFDocument document = new XWPFDocument();
-				XWPFParagraph title = document.createParagraph();
-				title.setAlignment(ParagraphAlignment.CENTER);
+				XWPFParagraph noteSheetTitle = document.createParagraph();
+				noteSheetTitle.setAlignment(ParagraphAlignment.CENTER);
 				
-				XWPFRun titleRun = title.createRun();
-				titleRun.setText("Department of Legal Affairs");
-				titleRun.setColor("009933");
-				titleRun.setBold(true);
-				titleRun.setFontFamily("Courier");
-				titleRun.setFontSize(20);
+				XWPFRun noteSheetTitleRun = noteSheetTitle.createRun();
+				noteSheetTitleRun.setText("Department of Legal Affairs");
+				noteSheetTitleRun.setColor(fontColour);
+				noteSheetTitleRun.setBold(true);
+				noteSheetTitleRun.setFontFamily("Book Antiqua");
+				noteSheetTitleRun.setFontSize(18);
+				noteSheetTitleRun.addCarriageReturn();
 				
 				//https://www.baeldung.com/java-microsoft-word-with-apache-poi
 				
 //				https://www.javatpoint.com/apache-poi-word-paragraph
+				
+				XWPFParagraph noteSheetFileNumber = document.createParagraph();
+				noteSheetFileNumber.setAlignment(ParagraphAlignment.RIGHT);
+				
+				XWPFRun noteSheetFileNumberRun = noteSheetFileNumber.createRun();
+				noteSheetFileNumberRun.setText(fileNumber);
+				noteSheetFileNumberRun.setColor(fontColour);
+				noteSheetFileNumberRun.setFontFamily("Verdana");
+				noteSheetFileNumberRun.setFontSize(11);
+				noteSheetFileNumberRun.addCarriageReturn();
+				
+				XWPFParagraph noteSheetDate = document.createParagraph();
+				noteSheetDate.setAlignment(ParagraphAlignment.RIGHT);
+				
+				XWPFRun noteSheetDateRun = noteSheetFileNumber.createRun();
+				noteSheetDateRun.setText(currentdate.toString());
+				noteSheetDateRun.setColor(fontColour);
+				noteSheetDateRun.setFontFamily("Verdana");
+				noteSheetDateRun.setFontSize(11);
+				noteSheetDateRun.addCarriageReturn();
+				
+				XWPFParagraph noteSheetCaseNumber = document.createParagraph();
+				noteSheetCaseNumber.setAlignment(ParagraphAlignment.CENTER);
+				
+				XWPFRun noteSheetCaseNumberRun = noteSheetFileNumber.createRun();
+				noteSheetCaseNumberRun.setText(!registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? (registerRequestVO.getCaseType()+"No: "+registerRequestVO.getCaseNumber()+"/"+registerRequestVO.getCaseYear()) : (registerRequestVO.getCaseType()+"No: /"+registerRequestVO.getCaseYear()+"(F.R No: "+registerRequestVO.getFrNumber()+"/"+registerRequestVO.getFrYear()+")")); // set case number based on case type
+				noteSheetCaseNumberRun.setColor(fontColour);
+				noteSheetCaseNumberRun.setBold(true);
+				noteSheetCaseNumberRun.setFontFamily("Verdana");
+				noteSheetCaseNumberRun.setFontSize(12);
+				noteSheetCaseNumberRun.addCarriageReturn();
+				
+				XWPFParagraph noteSheetSL = document.createParagraph();
+				noteSheetSL.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun noteSheetSLRun = noteSheetFileNumber.createRun();
+				noteSheetSLRun.setText("SL.1 (R)"); 
+				noteSheetSLRun.setColor(fontColour);
+				noteSheetSLRun.setFontFamily("Verdana");
+				noteSheetSLRun.setFontSize(11);
+				noteSheetSLRun.addCarriageReturn();
+				
+				XWPFParagraph noteSheetPara1 = document.createParagraph();
+				noteSheetPara1.setAlignment(ParagraphAlignment.DISTRIBUTE);
+				
+				XWPFRun noteSheetPara1Run = noteSheetFileNumber.createRun();
+				noteSheetPara1Run.setText("We have received a copy of " +registerRequestVO.getCaseType() +"from the Office of the Additional Solicitor General of India, High Court of Karnataka for nomination of Central Government Counsel."); 
+				noteSheetPara1Run.setColor(fontColour);
+				noteSheetPara1Run.addCarriageReturn();
+				noteSheetPara1Run.setFontFamily("Verdana");
+				noteSheetPara1Run.setFontSize(10);
+				noteSheetPara1Run.addCarriageReturn();
+				
+				XWPFParagraph noteSheetPara2 = document.createParagraph();
+				noteSheetPara2.setAlignment(ParagraphAlignment.DISTRIBUTE);
+				
+				XWPFRun noteSheetPara2Run = noteSheetFileNumber.createRun();  // fetch counsel name, designation, court etc from db
+				noteSheetPara2Run.setText("As directed in the FR, a fair nomination in favour of " +registerRequestVO.getCounselID() +"is put up for signature please."); 
+				noteSheetPara2Run.setColor(fontColour);
+				noteSheetPara2Run.setFontFamily("Verdana");
+				noteSheetPara2Run.setFontSize(10);
+				noteSheetPara2Run.addCarriageReturn();
+				noteSheetPara2Run.addCarriageReturn();
+				noteSheetPara2Run.addCarriageReturn();
+				
+				//continue from here
 				
 				FileOutputStream out = new FileOutputStream("F-"+registerRequestVO.getFileNumber()+".docx");
 				document.write(out);
