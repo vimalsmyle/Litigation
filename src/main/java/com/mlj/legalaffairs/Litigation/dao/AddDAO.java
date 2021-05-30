@@ -4,8 +4,8 @@
 package com.mlj.legalaffairs.Litigation.dao;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,18 +14,20 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-
 import com.mlj.legalaffairs.Litigation.constants.DataBaseConstants;
+import com.mlj.legalaffairs.Litigation.constants.ExtraConstants;
 import com.mlj.legalaffairs.Litigation.request.RegisterRequestVO;
 import com.mlj.legalaffairs.Litigation.response.ResponseVO;
+import com.mlj.legalaffairs.Litigation.response.CaseVO;
 import com.mlj.legalaffairs.Litigation.response.CounselResponseVO;
 import com.mlj.legalaffairs.Litigation.response.RegisterResponseVO;
 
@@ -37,11 +39,11 @@ public class AddDAO {
 	
 	public static Connection getConnection() throws ClassNotFoundException,
 	SQLException {
-Connection connection = null;
-Class.forName(DataBaseConstants.DRIVER_CLASS);
-connection = DriverManager.getConnection(DataBaseConstants.DRIVER_URL,
-		DataBaseConstants.USER_NAME, DataBaseConstants.PASSWORD);
-return connection;
+		Connection connection = null;
+		Class.forName(DataBaseConstants.DRIVER_CLASS);
+		connection = DriverManager.getConnection(DataBaseConstants.DRIVER_URL, DataBaseConstants.USER_NAME,
+				DataBaseConstants.PASSWORD);
+		return connection;
 }
 
 	public List<CounselResponseVO> getCounseldetails() {
@@ -120,7 +122,7 @@ return connection;
 		return registerList;
 	}
 	
-	public ResponseVO addNomination(RegisterRequestVO registerRequestVO) throws SQLException, IOException{
+	public ResponseVO addNomination(RegisterRequestVO registerRequestVO) throws Exception{
 		// TODO Auto-generated method stub
 
 		Connection con = null;
@@ -165,10 +167,15 @@ return connection;
 				
 			}
 			
-			if (pstmt.executeUpdate() > 0) {
+//			if (pstmt.executeUpdate() > 0) {
 				
+				if(!registerRequestVO.isOld()) {
 				// create Nomination letter in doc format
 				
+				CaseVO caseVO = new CaseVO();
+				if(registerRequestVO.getCaseTypeID() != 78) {caseVO = fetchCaseDetails(registerRequestVO.getCaseTypeID());}
+				
+				String caseNumber = (registerRequestVO.getCourtType() == 1 ? (registerRequestVO.getCaseTypeID() != 78 ? (!registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? (caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()+"/"+registerRequestVO.getCaseYear()) : (registerRequestVO.getCaseType()+" No: /"+registerRequestVO.getCaseYear()+"(F.R No: "+registerRequestVO.getFrNumber()+"/"+registerRequestVO.getFrYear()+")")) : registerRequestVO.getCaseNumber() ): (caseVO.getAbbrevation() + " No: 170/" + registerRequestVO.getCaseNumber() + "/" + registerRequestVO.getCaseYear()));
 				drivename = drivename.replaceAll("<folder>", registerRequestVO.getCourtType() == 1 ? "High Court Nominations" : "CAT Nominations");
 				
 				File directory = new File(drivename);
@@ -184,7 +191,6 @@ return connection;
 				noteSheetTitleRun.setBold(true);
 				noteSheetTitleRun.setFontFamily("Book Antiqua");
 				noteSheetTitleRun.setFontSize(18);
-				noteSheetTitleRun.addCarriageReturn();
 				
 				//https://www.baeldung.com/java-microsoft-word-with-apache-poi
 				
@@ -192,78 +198,373 @@ return connection;
 				
 				XWPFParagraph noteSheetFileNumber = document.createParagraph();
 				noteSheetFileNumber.setAlignment(ParagraphAlignment.RIGHT);
+				noteSheetFileNumber.setSpacingAfter(0);
 				
 				XWPFRun noteSheetFileNumberRun = noteSheetFileNumber.createRun();
 				noteSheetFileNumberRun.setText(fileNumber);
 				noteSheetFileNumberRun.setColor(fontColour);
 				noteSheetFileNumberRun.setFontFamily("Verdana");
 				noteSheetFileNumberRun.setFontSize(11);
-				noteSheetFileNumberRun.addCarriageReturn();
 				
 				XWPFParagraph noteSheetDate = document.createParagraph();
 				noteSheetDate.setAlignment(ParagraphAlignment.RIGHT);
 				
-				XWPFRun noteSheetDateRun = noteSheetFileNumber.createRun();
-				noteSheetDateRun.setText(currentdate.toString());
+				XWPFRun noteSheetDateRun = noteSheetDate.createRun();
+				noteSheetDateRun.setText("Dated: "+dateformatter(currentdate.toString()));
 				noteSheetDateRun.setColor(fontColour);
 				noteSheetDateRun.setFontFamily("Verdana");
 				noteSheetDateRun.setFontSize(11);
-				noteSheetDateRun.addCarriageReturn();
 				
 				XWPFParagraph noteSheetCaseNumber = document.createParagraph();
 				noteSheetCaseNumber.setAlignment(ParagraphAlignment.CENTER);
 				
-				XWPFRun noteSheetCaseNumberRun = noteSheetFileNumber.createRun();
-				noteSheetCaseNumberRun.setText(!registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? (registerRequestVO.getCaseType()+"No: "+registerRequestVO.getCaseNumber()+"/"+registerRequestVO.getCaseYear()) : (registerRequestVO.getCaseType()+"No: /"+registerRequestVO.getCaseYear()+"(F.R No: "+registerRequestVO.getFrNumber()+"/"+registerRequestVO.getFrYear()+")")); // set case number based on case type
+				XWPFRun noteSheetCaseNumberRun = noteSheetCaseNumber.createRun();
+//				noteSheetCaseNumberRun.setText(!registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? (registerRequestVO.getCaseType()+"No: "+registerRequestVO.getCaseNumber()+"/"+registerRequestVO.getCaseYear()) : (registerRequestVO.getCaseType()+"No: /"+registerRequestVO.getCaseYear()+"(F.R No: "+registerRequestVO.getFrNumber()+"/"+registerRequestVO.getFrYear()+")"));
+				noteSheetCaseNumberRun.setText(caseNumber);
 				noteSheetCaseNumberRun.setColor(fontColour);
 				noteSheetCaseNumberRun.setBold(true);
 				noteSheetCaseNumberRun.setFontFamily("Verdana");
 				noteSheetCaseNumberRun.setFontSize(12);
-				noteSheetCaseNumberRun.addCarriageReturn();
 				
 				XWPFParagraph noteSheetSL = document.createParagraph();
 				noteSheetSL.setAlignment(ParagraphAlignment.LEFT);
 				
-				XWPFRun noteSheetSLRun = noteSheetFileNumber.createRun();
+				XWPFRun noteSheetSLRun = noteSheetSL.createRun();
 				noteSheetSLRun.setText("SL.1 (R)"); 
 				noteSheetSLRun.setColor(fontColour);
 				noteSheetSLRun.setFontFamily("Verdana");
 				noteSheetSLRun.setFontSize(11);
-				noteSheetSLRun.addCarriageReturn();
 				
 				XWPFParagraph noteSheetPara1 = document.createParagraph();
-				noteSheetPara1.setAlignment(ParagraphAlignment.DISTRIBUTE);
+				noteSheetPara1.setAlignment(ParagraphAlignment.BOTH);
 				
-				XWPFRun noteSheetPara1Run = noteSheetFileNumber.createRun();
-				noteSheetPara1Run.setText("We have received a copy of " +registerRequestVO.getCaseType() +"from the Office of the Additional Solicitor General of India, High Court of Karnataka for nomination of Central Government Counsel."); 
+				XWPFRun noteSheetPara1Run = noteSheetPara1.createRun();
+				// modify for nomination through dept letters and other sources
+				noteSheetPara1Run.setText("	We have received a copy of " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) +" from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka for nomination of Central Government Counsel." : "Hon`ble Central Administrative Tribunal, Bangalore") ); 
 				noteSheetPara1Run.setColor(fontColour);
 				noteSheetPara1Run.addCarriageReturn();
 				noteSheetPara1Run.setFontFamily("Verdana");
 				noteSheetPara1Run.setFontSize(10);
-				noteSheetPara1Run.addCarriageReturn();
 				
 				XWPFParagraph noteSheetPara2 = document.createParagraph();
-				noteSheetPara2.setAlignment(ParagraphAlignment.DISTRIBUTE);
+				noteSheetPara2.setAlignment(ParagraphAlignment.BOTH);
 				
-				XWPFRun noteSheetPara2Run = noteSheetFileNumber.createRun();  // fetch counsel name, designation, court etc from db
-				noteSheetPara2Run.setText("As directed in the FR, a fair nomination in favour of " +registerRequestVO.getCounselID() +"is put up for signature please."); 
+				XWPFRun noteSheetPara2Run = noteSheetPara2.createRun(); 
+				
+				CounselResponseVO counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
+				
+				noteSheetPara2Run.setText("	As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() +" is put up for signature please."); 
 				noteSheetPara2Run.setColor(fontColour);
 				noteSheetPara2Run.setFontFamily("Verdana");
 				noteSheetPara2Run.setFontSize(10);
 				noteSheetPara2Run.addCarriageReturn();
-				noteSheetPara2Run.addCarriageReturn();
-				noteSheetPara2Run.addCarriageReturn();
+				
+				XWPFParagraph courtClerkSign = document.createParagraph();
+				courtClerkSign.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun courtClerkSignRun = courtClerkSign.createRun(); 
+				courtClerkSignRun.setText("Court Clerk"); 
+				courtClerkSignRun.setColor(fontColour);
+				courtClerkSignRun.setFontFamily("Verdana");
+				courtClerkSignRun.setUnderline(UnderlinePatterns.SINGLE);
+				courtClerkSignRun.setFontSize(10);
+				courtClerkSignRun.addCarriageReturn();
+				courtClerkSignRun.addCarriageReturn();
+				
+				XWPFParagraph ALASign = document.createParagraph();
+				ALASign.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun ALASignRun = ALASign.createRun();  
+				ALASignRun.setText("Assistant L.A"); 
+				ALASignRun.setColor(fontColour);
+				ALASignRun.setFontFamily("Verdana");
+				ALASignRun.setUnderline(UnderlinePatterns.SINGLE);
+				ALASignRun.setFontSize(10);
+				ALASignRun.addCarriageReturn();
+				ALASignRun.addCarriageReturn();
+				
+				if(registerRequestVO.getCourtType() == 1) {
+				
+				XWPFParagraph textMessage = document.createParagraph();
+				textMessage.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun textMessageRun = textMessage.createRun();  
+				textMessageRun.setText("Text message has been sent to the counsel."); 
+				textMessageRun.setColor(fontColour);
+				textMessageRun.setFontFamily("Verdana");
+				textMessageRun.setFontSize(10);
+				textMessageRun.addCarriageReturn();
+				textMessageRun.addCarriageReturn();
+				
+				XWPFParagraph courtClerkSign1 = document.createParagraph();
+				courtClerkSign1.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun courtClerkSignRun1 = courtClerkSign1.createRun(); 
+				courtClerkSignRun1.setText("Court Clerk"); 
+				courtClerkSignRun1.setColor(fontColour);
+				courtClerkSignRun1.setFontFamily("Verdana");
+				courtClerkSignRun1.setUnderline(UnderlinePatterns.SINGLE);
+				courtClerkSignRun1.setFontSize(10);
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				courtClerkSignRun1.addCarriageReturn();
+				
+				} else {
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+					ALASignRun.addCarriageReturn();
+				}
+				
+				XWPFParagraph logo = document.createParagraph();
+				logo.setAlignment(ParagraphAlignment.CENTER);
+				logo.setSpacingAfter(0);
+				
+				XWPFRun logoRun = logo.createRun(); ///Litigation/src/main/webapp/images/Emblem.png
+				logoRun.addPicture(new FileInputStream(new File(ExtraConstants.EMBLEM)), XWPFDocument.PICTURE_TYPE_PNG, "Emblem", Units.toEMU(40), Units.toEMU(50));
+				
+				XWPFParagraph letterHead = document.createParagraph();
+				letterHead.setAlignment(ParagraphAlignment.CENTER);
+				letterHead.setSpacingAfterLines(1);
+				
+				XWPFRun GOIRun = letterHead.createRun();
+				GOIRun.setText("Government of India");
+				GOIRun.setFontFamily("Calibri");
+				GOIRun.setColor(fontColour);
+				GOIRun.setFontSize(10);
+				GOIRun.setBold(true);
+				GOIRun.addCarriageReturn();
+				
+				XWPFRun MLJRun = letterHead.createRun();
+				MLJRun.setText("Ministry of Law & Justice");
+				MLJRun.setFontFamily("Calibri"); MLJRun.setColor(fontColour); MLJRun.setFontSize(10); MLJRun.setBold(true);
+				MLJRun.addCarriageReturn();
+				
+				XWPFRun DLARun = letterHead.createRun();
+				DLARun.setText("Department of Legal Affairs");
+				DLARun.setFontFamily("Calibri"); DLARun.setColor(fontColour); DLARun.setFontSize(10); DLARun.setBold(true);
+				DLARun.addCarriageReturn();
+				
+				XWPFRun BSRun = letterHead.createRun();
+				BSRun.setText("Branch Secretariat");
+				BSRun.setFontFamily("Calibri"); BSRun.setColor(fontColour); BSRun.setFontSize(10); BSRun.setBold(true);
+				BSRun.addCarriageReturn();
+				
+				XWPFRun Add1Run = letterHead.createRun();
+				Add1Run.setText("4th Floor, D & F Wing, Kendriya Sadan");
+				Add1Run.setFontFamily("Calibri"); Add1Run.setColor(fontColour); Add1Run.setFontSize(10); Add1Run.setBold(true);
+				Add1Run.addCarriageReturn();
+				
+				XWPFRun Add2Run = letterHead.createRun();
+				Add2Run.setText("Koramangala, Bengaluru – 560 034");
+				Add2Run.setFontFamily("Calibri"); Add2Run.setColor(fontColour); Add2Run.setFontSize(10); Add2Run.setBold(true);
+				Add2Run.addCarriageReturn();
+				
+				XWPFRun emailRun = letterHead.createRun();
+				emailRun.setText("E-mail: mljblore-ka@nic.in");
+				emailRun.setFontFamily("Calibri"); emailRun.setColor(fontColour); emailRun.setFontSize(10); emailRun.setBold(true);
+				emailRun.addCarriageReturn();
+				
+				XWPFRun phoneRun = letterHead.createRun();
+				phoneRun.setText("Ph: 080-25532002/2003   Fax: 080-25502003");
+				phoneRun.setFontFamily("Calibri"); phoneRun.setColor(fontColour); phoneRun.setFontSize(10); phoneRun.setBold(true);
+				phoneRun.addCarriageReturn();
+				
+				XWPFParagraph fileNumberDate = document.createParagraph();
+				fileNumberDate.setAlignment(ParagraphAlignment.BOTH);
+				fileNumberDate.setSpacingAfter(1);
+				
+				XWPFRun fileNumberDateRun = fileNumberDate.createRun();
+				fileNumberDateRun.setText(fileNumber + "                                                                                                                                                                 Dated: " + dateformatter(currentdate.toString()));
+				fileNumberDateRun.setFontFamily("Calibri"); fileNumberDateRun.setColor(fontColour); fileNumberDateRun.setFontSize(10);
+				fileNumberDateRun.addCarriageReturn();
+				
+				XWPFParagraph to = document.createParagraph();
+				to.setAlignment(ParagraphAlignment.LEFT);
+				to.setSpacingAfter(1);
+				
+				XWPFRun toRun = to.createRun();
+				toRun.setText("To");
+				toRun.setFontFamily("Calibri");toRun.setColor(fontColour); toRun.setFontSize(10);
+				toRun.addCarriageReturn();
+				
+				// add department address details after updating the database
+				
+				XWPFParagraph subject = document.createParagraph();
+				subject.setAlignment(ParagraphAlignment.BOTH);
+				subject.setSpacingAfter(1);
+				
+				XWPFRun subjectRun = subject.createRun();
+				subjectRun.setText("Sub: Nomination of " + counselResponseVO.getAbbrevation() + " in case " + caseNumber + " filed by " +registerRequestVO.getFiledByTitle() + " "+registerRequestVO.getFiledBy() + " Vs " + registerRequestVO.getFiledAgainst() + " before the Hon’ble " + (registerRequestVO.getCourtType() == 1 ? "High Court of Karnataka" : "Central Administrative Tribunal") +", Bangalore.");
+				subjectRun.setFontFamily("Calibri"); subjectRun.setColor(fontColour); subjectRun.setFontSize(10);
+				subjectRun.addCarriageReturn();
+				
+				XWPFParagraph sir = document.createParagraph();
+				sir.setAlignment(ParagraphAlignment.LEFT);
+				sir.setSpacingAfter(1);
+				
+				XWPFRun sirRun = sir.createRun();
+				sirRun.setText("Sir,");
+				sirRun.setFontFamily("Calibri");sirRun.setColor(fontColour); sirRun.setFontSize(10);
+				
+				XWPFParagraph para1 = document.createParagraph();
+				para1.setAlignment(ParagraphAlignment.BOTH);
+				
+				XWPFRun para1Run = para1.createRun();
+				para1Run.setText("                A copy of the " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) + " received from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka, Bangalore is enclosed. Please note that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent "+ (!registerRequestVO.getRespondents().equalsIgnoreCase("0") ? "Respondent No(s): " + registerRequestVO.getRespondents() : "Union of India ") : "Hon`ble Central Administrative Tribunal, Bangalore is enclosed. Please note that " + counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent " + (!registerRequestVO.getRespondents().equalsIgnoreCase("0") ? "Respondent No(s): " + registerRequestVO.getRespondents() : "Union of India ") ) + (registerRequestVO.getCourtType() == 1 ? " before the Hon`ble High Court of Karnataka, Bangalore." : " before the Hon`ble Central Administrative Tribunal, Bangalore."));
+				para1Run.setFontFamily("Calibri");para1Run.setColor(fontColour); para1Run.setFontSize(10);
+				
+				XWPFParagraph para2 = document.createParagraph();
+				para2.setAlignment(ParagraphAlignment.BOTH);
+				
+				XWPFRun para2Run = para2.createRun();
+				if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
+					para2Run.setText("                The said Counsel is being requested to intimate the " + caseVO.getAbbrevation() +" No. /"+ registerRequestVO.getCaseYear() +" allotted to the FR No."+ registerRequestVO.getFrNumber() +"/" + registerRequestVO.getFrYear() + " to the department/this Ministry as soon as possible.");
+					para2Run.setUnderline(UnderlinePatterns.SINGLE);
+				} else {
+					para2Run.setText("                Therefore, the department is advised to contact the said Counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. ");
+				}
+				para2Run.setFontFamily("Calibri");para2Run.setColor(fontColour); para2Run.setFontSize(10);
+				
+				XWPFParagraph para3 = document.createParagraph();
+				para3.setAlignment(ParagraphAlignment.BOTH);
+				
+				XWPFRun para3Run = para3.createRun();
+				if(!registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
+					para3Run.setText("                The department is further requested to make correspondence with the Counsel directly and to take follow up action in the matter.");
+				} else {
+					para3Run.setText("                Therefore, the department is advised to contact the said Counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. ");
+				}
+				para3Run.setFontFamily("Calibri");para3Run.setColor(fontColour); para3Run.setFontSize(10);
+				
+				XWPFParagraph note = document.createParagraph();
+				note.setAlignment(ParagraphAlignment.BOTH);
+				
+				XWPFRun note1Run = note.createRun();
+				if(registerRequestVO.getCourtType() == 1) {
+					if(counselResponseVO.getAbbrevation().equalsIgnoreCase("CGC")) {
+						note1Run.setText("NOTE: 1. Appearance fees & drafting fees including conference fee are paid by this Ministry. However, Misc. expenses i.e. typing, photocopy, postage, Court Fee, Notarization etc., are to be borne by the concerned Department at their own satisfaction after taking into account the details of miscellaneous expenses actually incurred. ");
+						note1Run.setUnderline(UnderlinePatterns.SINGLE);
+					} else {
+						note1Run.setText("NOTE: 1. The fee payable to Senior Panel Counsel in the case will be borne by the concerned department as per the Senior Panel Counsel, terms and conditions. ");
+						note1Run.setUnderline(UnderlinePatterns.SINGLE);
+					}
+					
+				} else {
+					if(counselResponseVO.getAbbrevation().equalsIgnoreCase("ACGSC")) {
+						note1Run.setText("NOTE: 1. The fee payable to the Additional Central Government Standing Counsel in the case will be borne by the concerned department as per O.M No. 26(2)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. ");
+						note1Run.setUnderline(UnderlinePatterns.SINGLE);
+					} else {
+						note1Run.setText("NOTE: 1. The fee payable to the Senior Panel Counsel in the case will be borne by the concerned department as per O.M No. 26(1)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. ");
+						note1Run.setUnderline(UnderlinePatterns.SINGLE);
+					}
+				}
+				note1Run.setFontFamily("Calibri");note1Run.setColor(fontColour); note1Run.setFontSize(10);
+				
+				XWPFRun note2Run = note.createRun();
+				note2Run.setText("2. "+ fileNumber +" may be quoted in all your future correspondences in this regard.");
+				note2Run.setFontFamily("Calibri");note2Run.setColor(fontColour); note2Run.setFontSize(10);
+				note2Run.setUnderline(UnderlinePatterns.SINGLE);
+				
+				XWPFParagraph faithfully = document.createParagraph();
+				faithfully.setAlignment(ParagraphAlignment.RIGHT);
+				
+				XWPFRun faithfullyRun = faithfully.createRun();
+				faithfullyRun.setText("Yours faithfully");
+				faithfullyRun.setFontFamily("Calibri");faithfullyRun.setColor(fontColour); faithfullyRun.setFontSize(10);
+				
+				XWPFParagraph enclosure = document.createParagraph();
+				enclosure.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun enclosureRun = enclosure.createRun();
+				enclosureRun.setText("Encl:");
+				enclosureRun.setFontFamily("Calibri");enclosureRun.setColor(fontColour); enclosureRun.setFontSize(10);
+				enclosureRun.setUnderline(UnderlinePatterns.SINGLE);
+				
+				XWPFRun enclosure1Run = enclosure.createRun();
+				enclosure1Run.setText(" "+caseVO.getAbbrevation() + " Copy");
+				enclosure1Run.setFontFamily("Calibri");enclosure1Run.setColor(fontColour); enclosure1Run.setFontSize(10);
+				enclosure1Run.addCarriageReturn();
+				
+				XWPFParagraph signature = document.createParagraph();
+				signature.setAlignment(ParagraphAlignment.RIGHT);
+				signature.setSpacingAfter(0);
+				
+				XWPFRun signatureRun = signature.createRun();
+				signatureRun.setText("Assistant Legal Adviser & In-Charge");
+				signatureRun.setFontFamily("Calibri");signatureRun.setColor(fontColour); signatureRun.setFontSize(10);
+				
+				XWPFParagraph copyto = document.createParagraph();
+				copyto.setAlignment(ParagraphAlignment.LEFT);
+				
+				XWPFRun copytoRun = copyto.createRun();
+				copytoRun.setText("Copy to:-");
+				copytoRun.setFontFamily("Calibri");copytoRun.setColor(fontColour); copytoRun.setFontSize(10);
+				copytoRun.setUnderline(UnderlinePatterns.SINGLE);
 				
 				//continue from here
 				
-				FileOutputStream out = new FileOutputStream("F-"+registerRequestVO.getFileNumber()+".docx");
+				FileOutputStream out = new FileOutputStream(drivename + "F-"+registerRequestVO.getFileNumber()+".docx");
 				document.write(out);
 				out.close();
 				document.close();
 				
 				responsevo.setResult("Success");
-				responsevo.setMessage("Nomination created Successfully");
-			}
+				responsevo.setMessage("Nomination Letter created Successfully"); 
+				} else {
+					responsevo.setResult("Success");
+					responsevo.setMessage("Register Updated Successfully");
+				}
+//			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -286,7 +587,73 @@ return connection;
 	public static String dateformatter(String date) throws ParseException {
 		
 		SimpleDateFormat DBformat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat clientFormat = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat clientFormat = new SimpleDateFormat("dd.MM.yyyy");
 		return clientFormat.format(DBformat.parse(date));
+	}
+	
+	public static CounselResponseVO fetchCounselDetails(int id) throws SQLException, Exception {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		CounselResponseVO counselResponseVO = new CounselResponseVO();
+		
+		try {
+			con = getConnection();
+			
+			pstmt = con.prepareStatement("SELECT * FROM counseldetails AS cd LEFT JOIN counseltype AS ct ON ct.CounselTypeID = cd.CounselTypeID WHERE CounselID = " +id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+
+				counselResponseVO.setTitle(rs.getString("Title"));
+				counselResponseVO.setName(rs.getString("Name"));
+				counselResponseVO.setCounselType(rs.getString("CounselType"));
+				counselResponseVO.setAbbrevation(rs.getString("Abbrevation"));
+				counselResponseVO.setAddress(rs.getString("Address"));
+				counselResponseVO.setMobileNumber(rs.getString("MobileNumber"));
+				counselResponseVO.setEmailID(rs.getString("EmailID"));
+				counselResponseVO.setTelephoneNumber(rs.getString("TelephoneNumber"));
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+				
+		return counselResponseVO;
+		
+	}
+	
+	public static CaseVO fetchCaseDetails(int id) throws SQLException, Exception {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		CaseVO caseVO = new CaseVO();
+		
+		try {
+			con = getConnection();
+			
+			pstmt = con.prepareStatement("SELECT * FROM casetype WHERE CaseID = " +id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+
+				caseVO.setCaseName(rs.getString("CaseName"));
+				caseVO.setAbbrevation(rs.getString("Abbrevation"));
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+				
+		return caseVO;
+		
 	}
 }

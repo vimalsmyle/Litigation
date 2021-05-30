@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/task 
 	 http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<context:component-scan base-package="com.mlj.legalaffairs.litigation.controller" />
+	<context:component-scan base-package="com.mlj.legalaffairs.Litigation.controller" />
 	
 	<mvc:default-servlet-handler/>
 	

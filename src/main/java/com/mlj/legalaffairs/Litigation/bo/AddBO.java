@@ -3,9 +3,6 @@
  */
 package com.mlj.legalaffairs.Litigation.bo;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import com.mlj.legalaffairs.Litigation.dao.AddDAO;
 import com.mlj.legalaffairs.Litigation.exceptions.BusinessException;
 import com.mlj.legalaffairs.Litigation.request.CounselRequestVO;
@@ -30,7 +27,7 @@ public class AddBO {
 		return null;
 	}
 
-	public ResponseVO addNomination(RegisterRequestVO registerRequestVO)  throws BusinessException, SQLException, IOException{
+	public ResponseVO addNomination(RegisterRequestVO registerRequestVO)  throws Exception{
 		// TODO Auto-generated method stub
 		
 		ResponseVO responsevo = adddao.addNomination(registerRequestVO);

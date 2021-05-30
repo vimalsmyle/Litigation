@@ -15,6 +15,7 @@ public class CounselResponseVO {
 	private String title;
 	private String name;
 	private String counselType;
+	private String abbrevation;
 	private String termFrom;
 	private String termUpto;
 	private String address;
@@ -119,6 +120,14 @@ public class CounselResponseVO {
 
 	public void setData(List<CounselResponseVO> data) {
 		this.data = data;
+	}
+
+	public String getAbbrevation() {
+		return abbrevation;
+	}
+
+	public void setAbbrevation(String abbrevation) {
+		this.abbrevation = abbrevation;
 	}
 
 }

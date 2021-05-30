@@ -96,7 +96,7 @@ public class AddController {
 		try {
 			 responsevo = addbo.addNomination(hcvo);
 			
-		} catch (BusinessException e) {
+		} catch (Exception e) {
 			responsevo.setResult("Failure");
 			responsevo.setMessage(e.getMessage());
 		}

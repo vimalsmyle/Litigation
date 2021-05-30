@@ -14,7 +14,9 @@ public class RegisterRequestVO {
 	private int courtType;
 	private String fileNumber;
 	private int fileYear;
+	private String filedByTitle;
 	private String filedBy;
+	private String filedAgainst;
 	private int caseTypeID;
 	private String caseType;
 	private String caseNumber;
@@ -25,7 +27,10 @@ public class RegisterRequestVO {
 	private int ministryID;
 	private int departmentID;
 	private int counselID;
+	private int counselOnRecordID;
 	private String remarks;
+	private boolean old;
+	private String respondents;
 	
 	public long getHighCourtID() {
 		return highCourtID;
@@ -128,6 +133,36 @@ public class RegisterRequestVO {
 	}
 	public void setCourtType(int courtType) {
 		this.courtType = courtType;
+	}
+	public int getCounselOnRecordID() {
+		return counselOnRecordID;
+	}
+	public void setCounselOnRecordID(int counselOnRecordID) {
+		this.counselOnRecordID = counselOnRecordID;
+	}
+	public String getFiledAgainst() {
+		return filedAgainst;
+	}
+	public void setFiledAgainst(String filedAgainst) {
+		this.filedAgainst = filedAgainst;
+	}
+	public boolean isOld() {
+		return old;
+	}
+	public void setOld(boolean old) {
+		this.old = old;
+	}
+	public String getRespondents() {
+		return respondents;
+	}
+	public void setRespondents(String respondents) {
+		this.respondents = respondents;
+	}
+	public String getFiledByTitle() {
+		return filedByTitle;
+	}
+	public void setFiledByTitle(String filedByTitle) {
+		this.filedByTitle = filedByTitle;
 	}
 	
 }
