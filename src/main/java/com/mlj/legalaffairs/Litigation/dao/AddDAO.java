@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.LineSpacingRule;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -374,7 +375,7 @@ public class AddDAO {
 				
 				XWPFParagraph letterHead = document.createParagraph();
 				letterHead.setAlignment(ParagraphAlignment.CENTER);
-				letterHead.setSpacingAfterLines(1);
+				letterHead.setSpacingAfter(0);
 				
 				XWPFRun GOIRun = letterHead.createRun();
 				GOIRun.setText("Government of India");
@@ -417,20 +418,18 @@ public class AddDAO {
 				XWPFRun phoneRun = letterHead.createRun();
 				phoneRun.setText("Ph: 080-25532002/2003   Fax: 080-25502003");
 				phoneRun.setFontFamily("Calibri"); phoneRun.setColor(fontColour); phoneRun.setFontSize(10); phoneRun.setBold(true);
-				phoneRun.addCarriageReturn();
 				
 				XWPFParagraph fileNumberDate = document.createParagraph();
 				fileNumberDate.setAlignment(ParagraphAlignment.BOTH);
-				fileNumberDate.setSpacingAfter(1);
+				fileNumberDate.setSpacingAfter(0);
 				
 				XWPFRun fileNumberDateRun = fileNumberDate.createRun();
 				fileNumberDateRun.setText(fileNumber + "                                                                                                                                                                 Dated: " + dateformatter(currentdate.toString()));
 				fileNumberDateRun.setFontFamily("Calibri"); fileNumberDateRun.setColor(fontColour); fileNumberDateRun.setFontSize(10);
-				fileNumberDateRun.addCarriageReturn();
 				
 				XWPFParagraph to = document.createParagraph();
 				to.setAlignment(ParagraphAlignment.LEFT);
-				to.setSpacingAfter(1);
+				to.setSpacingAfter(0);
 				
 				XWPFRun toRun = to.createRun();
 				toRun.setText("To");
@@ -450,7 +449,7 @@ public class AddDAO {
 				
 				XWPFParagraph sir = document.createParagraph();
 				sir.setAlignment(ParagraphAlignment.LEFT);
-				sir.setSpacingAfter(1);
+				sir.setSpacingAfter(0);
 				
 				XWPFRun sirRun = sir.createRun();
 				sirRun.setText("Sir,");
@@ -458,13 +457,16 @@ public class AddDAO {
 				
 				XWPFParagraph para1 = document.createParagraph();
 				para1.setAlignment(ParagraphAlignment.BOTH);
+				para1.setSpacingAfter(0);
 				
 				XWPFRun para1Run = para1.createRun();
 				para1Run.setText("                A copy of the " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) + " received from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka, Bangalore is enclosed. Please note that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent "+ (!registerRequestVO.getRespondents().equalsIgnoreCase("0") ? "Respondent No(s): " + registerRequestVO.getRespondents() : "Union of India ") : "Hon`ble Central Administrative Tribunal, Bangalore is enclosed. Please note that " + counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent " + (!registerRequestVO.getRespondents().equalsIgnoreCase("0") ? "Respondent No(s): " + registerRequestVO.getRespondents() : "Union of India ") ) + (registerRequestVO.getCourtType() == 1 ? " before the Hon`ble High Court of Karnataka, Bangalore." : " before the Hon`ble Central Administrative Tribunal, Bangalore."));
 				para1Run.setFontFamily("Calibri");para1Run.setColor(fontColour); para1Run.setFontSize(10);
+				para1Run.addCarriageReturn();
 				
 				XWPFParagraph para2 = document.createParagraph();
 				para2.setAlignment(ParagraphAlignment.BOTH);
+				para2.setSpacingAfter(0);
 				
 				XWPFRun para2Run = para2.createRun();
 				if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
@@ -474,9 +476,11 @@ public class AddDAO {
 					para2Run.setText("                Therefore, the department is advised to contact the said Counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. ");
 				}
 				para2Run.setFontFamily("Calibri");para2Run.setColor(fontColour); para2Run.setFontSize(10);
+				para2Run.addCarriageReturn();
 				
 				XWPFParagraph para3 = document.createParagraph();
 				para3.setAlignment(ParagraphAlignment.BOTH);
+				para3.setSpacingAfter(0);
 				
 				XWPFRun para3Run = para3.createRun();
 				if(!registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
@@ -485,9 +489,11 @@ public class AddDAO {
 					para3Run.setText("                Therefore, the department is advised to contact the said Counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. ");
 				}
 				para3Run.setFontFamily("Calibri");para3Run.setColor(fontColour); para3Run.setFontSize(10);
+				para3Run.addCarriageReturn();
 				
 				XWPFParagraph note = document.createParagraph();
 				note.setAlignment(ParagraphAlignment.BOTH);
+				note.setSpacingAfter(0);
 				
 				XWPFRun note1Run = note.createRun();
 				if(registerRequestVO.getCourtType() == 1) {
@@ -517,10 +523,12 @@ public class AddDAO {
 				
 				XWPFParagraph faithfully = document.createParagraph();
 				faithfully.setAlignment(ParagraphAlignment.RIGHT);
+				faithfully.setSpacingAfter(0);
 				
 				XWPFRun faithfullyRun = faithfully.createRun();
 				faithfullyRun.setText("Yours faithfully");
 				faithfullyRun.setFontFamily("Calibri");faithfullyRun.setColor(fontColour); faithfullyRun.setFontSize(10);
+				faithfullyRun.addCarriageReturn();
 				
 				XWPFParagraph enclosure = document.createParagraph();
 				enclosure.setAlignment(ParagraphAlignment.LEFT);
@@ -533,7 +541,6 @@ public class AddDAO {
 				XWPFRun enclosure1Run = enclosure.createRun();
 				enclosure1Run.setText(" "+caseVO.getAbbrevation() + " Copy");
 				enclosure1Run.setFontFamily("Calibri");enclosure1Run.setColor(fontColour); enclosure1Run.setFontSize(10);
-				enclosure1Run.addCarriageReturn();
 				
 				XWPFParagraph signature = document.createParagraph();
 				signature.setAlignment(ParagraphAlignment.RIGHT);
@@ -545,13 +552,133 @@ public class AddDAO {
 				
 				XWPFParagraph copyto = document.createParagraph();
 				copyto.setAlignment(ParagraphAlignment.LEFT);
+				copyto.setSpacingAfter(0);
 				
 				XWPFRun copytoRun = copyto.createRun();
 				copytoRun.setText("Copy to:-");
 				copytoRun.setFontFamily("Calibri");copytoRun.setColor(fontColour); copytoRun.setFontSize(10);
 				copytoRun.setUnderline(UnderlinePatterns.SINGLE);
 				
-				//continue from here
+				XWPFParagraph counselDetails = document.createParagraph();
+				counselDetails.setAlignment(ParagraphAlignment.BOTH);
+//				counselDetails.setSpacingLineRule(LineSpacingRule.AT_LEAST);
+				counselDetails.setSpacingAfterLines(0);
+				counselDetails.setSpacingAfter(0);
+				
+				XWPFRun counselNameRun = counselDetails.createRun();
+				counselNameRun.setText("1. "+counselResponseVO.getName());
+				counselNameRun.setFontFamily("Calibri");counselNameRun.setColor(fontColour); counselNameRun.setFontSize(10);
+				counselNameRun.addCarriageReturn();
+				
+				XWPFRun counselDesignationRun = counselDetails.createRun();
+				counselDesignationRun.setText(counselResponseVO.getCounselType());
+				counselDesignationRun.setFontFamily("Calibri");counselDesignationRun.setColor(fontColour); counselDesignationRun.setFontSize(10);
+				counselDesignationRun.addCarriageReturn();
+				
+				XWPFRun counselAddressRun = counselDetails.createRun();
+				counselAddressRun.setText(counselResponseVO.getAddress().trim()+"; Mobile: "+counselResponseVO.getMobileNumber().trim()+"; Email: "+counselResponseVO.getEmailID().trim()+(!counselResponseVO.getTelephoneNumber().isEmpty() ? "; Telephone:"+counselResponseVO.getTelephoneNumber()+" - ": " - "));
+				counselAddressRun.setFontFamily("Calibri");counselAddressRun.setColor(fontColour); counselAddressRun.setFontSize(10);
+				
+				XWPFRun counselpara1Run = counselDetails.createRun();
+				counselpara1Run.setFontFamily("Calibri");counselpara1Run.setColor(fontColour); counselpara1Run.setFontSize(10);
+				
+				if(registerRequestVO.getCourtType() == 1) {
+					counselpara1Run.setText("(a) On receipt of this Nomination letter you are requested to: ");
+				} else {
+					counselpara1Run.setText("(i). The engagement is governed by the "+(counselResponseVO.getAbbrevation().equalsIgnoreCase("ACGSC") ? "O.M No.26(2)" : "O.M No.26(1)") + ")/1999 -Judl. Dated 24.09.1999 r/w O.M. No.26(1)/2014/Judl. dated 01.01.2015 issued by the Ministry of Law & Justice, Department of Legal Affairs, Shastri Bhavan, New Delhi- 110 001.");
+					counselpara1Run.addCarriageReturn();
+					counselpara1Run.addCarriageReturn();
+				}
+				
+				XWPFRun counselpara2Run = counselDetails.createRun();
+				counselpara2Run.setFontFamily("Calibri");counselpara2Run.setColor(fontColour); counselpara2Run.setFontSize(10);
+				
+				if(registerRequestVO.getCourtType() == 1) {
+					counselpara2Run.setText("(i). File your memo of appearance immediately and also to ensure that your name is shown in the cause list whenever the case is listed ");
+					counselpara2Run.setUnderline(UnderlinePatterns.SINGLE);
+				} else {
+					counselpara2Run.setText("(ii). You are requested to file your memo of appearance immediately on receipt of this nomination letter under intimation to this Branch Secretariat with a copy to the concerned department /Ministry, failing which the case will be reallocated to any other Counsel without any further notice.");
+					counselpara2Run.addCarriageReturn();
+					counselpara2Run.addCarriageReturn();
+				}
+				
+				XWPFParagraph counselDetails1 = document.createParagraph();
+				counselDetails1.setAlignment(ParagraphAlignment.BOTH);
+				counselDetails1.setSpacingLineRule(LineSpacingRule.AT_LEAST);
+				counselDetails1.setSpacingAfterLines(0);
+				counselDetails1.setSpacingAfter(0);
+				
+				XWPFRun counselpara3Run = counselDetails.createRun();
+				counselpara3Run.setFontFamily("Calibri");counselpara3Run.setColor(fontColour); counselpara3Run.setFontSize(10);
+				
+				if(registerRequestVO.getCourtType() == 1) {
+					counselpara3Run.setText("under intimation to this Branch Secretariat quoting ");
+				} else {
+					counselpara3Run.setText("(iii). You are also requested to contact and make correspondence with the department directly and take follow up action in the matter. Further, you are requested to intimate the Department, the progress of the case regularly including obtaining and forwarding certified copy of the order/judgment to the concerned department wherever necessary.");
+					counselpara3Run.addCarriageReturn();
+					counselpara3Run.addCarriageReturn();
+					counselpara3Run.addCarriageReturn();
+				}
+				
+				XWPFRun counselpara4Run = counselDetails.createRun();
+				counselpara4Run.setFontFamily("Calibri");counselpara4Run.setColor(fontColour); counselpara4Run.setFontSize(10);
+				
+				if(registerRequestVO.getCourtType() == 1) {
+					counselpara4Run.setText(fileNumber);
+					counselpara4Run.setUnderline(UnderlinePatterns.SINGLE);
+				}
+				
+				if(registerRequestVO.getCourtType() == 1) {
+					XWPFRun counselpara5Run = counselDetails.createRun();
+					counselpara5Run.setFontFamily("Calibri");counselpara5Run.setColor(fontColour); counselpara5Run.setFontSize(10);
+					counselpara5Run.setText(" with a copy of the concerned department/ Ministry, failing which the case will be reallocated to any other Counsel without any further notice.");
+					counselpara5Run.addCarriageReturn();
+					
+					XWPFRun counselpara6Run = counselDetails1.createRun();
+					counselpara6Run.setFontFamily("Calibri");counselpara6Run.setColor(fontColour); counselpara6Run.setFontSize(10);
+					counselpara6Run.setUnderline(UnderlinePatterns.SINGLE);
+					
+					if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
+					counselpara6Run.setText("(ii). Intimate the "+caseVO.getAbbrevation()+" No. /"+ registerRequestVO.getCaseYear()+" allotted to the FR No. "+"/"+ registerRequestVO.getFrYear()+" to this Branch Secretariat and to the concerned department/ Ministry to update our records and also for timely process of your Fee Bill.");
+					counselpara6Run.addCarriageReturn();
+					counselpara6Run.addCarriageReturn();
+					} else {
+						counselpara6Run.setText("(ii). Contact and make correspondence with the department directly and take follow up action in the matter. Further, you are requested to intimate the department, the progress of the case regularly including obtaining and forwarding certified copy of the order/Judgment to the concerned department whenever necessary.");
+						counselpara6Run.addCarriageReturn();
+						counselpara6Run.addCarriageReturn();
+					}
+					
+					XWPFRun counselpara7Run = counselDetails1.createRun();
+					counselpara7Run.setFontFamily("Calibri");counselpara7Run.setColor(fontColour); counselpara7Run.setFontSize(10);
+					
+					if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
+						counselpara7Run.setText("(iii). Contact and make correspondence with the department directly and take follow up action in the matter. Further, you are requested to intimate the department, the progress of the case regularly including obtaining and forwarding certified copy of the order/Judgment to the concerned department whenever necessary.");
+						counselpara7Run.addCarriageReturn();
+						counselpara7Run.addCarriageReturn();
+						counselpara7Run.setUnderline(UnderlinePatterns.SINGLE);
+						}
+					
+					XWPFRun counselpara8Run = counselDetails1.createRun();
+					counselpara8Run.setFontFamily("Calibri");counselpara8Run.setColor(fontColour); counselpara8Run.setFontSize(10);
+					
+					counselpara8Run.setText("(b). Your engagement is governed by the O.M No. 26(2)/1999-Judl. Dated:24.09.1999 r/w O.M No. 26(1)/2014/Judl. Dated 01.10.2015 issued by the Ministry of Law & Justice, Department of Legal Affairs, Shastri Bhavan, New Delhi-110 001.");
+					counselpara8Run.addCarriageReturn();
+					counselpara8Run.addCarriageReturn();
+					
+					XWPFRun counselpara9Run = counselDetails1.createRun();
+					counselpara9Run.setFontFamily("Calibri");counselpara9Run.setColor(fontColour); counselpara9Run.setFontSize(10);
+					counselpara9Run.setText("2. Copy to the Additional SG, Hon`ble High Court of Karnataka, Bangalore- For kind information.");
+					counselpara9Run.addCarriageReturn();
+					counselpara9Run.addCarriageReturn();
+				}
+				
+				XWPFParagraph signature1 = document.createParagraph();
+				signature1.setAlignment(ParagraphAlignment.RIGHT);
+				signature1.setSpacingAfter(0);
+				
+				XWPFRun signature1Run = signature1.createRun();
+				signature1Run.setText("Assistant Legal Adviser & In-Charge");
+				signature1Run.setFontFamily("Calibri");signature1Run.setColor(fontColour); signature1Run.setFontSize(10);
 				
 				FileOutputStream out = new FileOutputStream(drivename + "F-"+registerRequestVO.getFileNumber()+".docx");
 				document.write(out);
