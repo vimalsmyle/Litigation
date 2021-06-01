@@ -255,7 +255,7 @@ insert  into `counseldetails`(`CounselID`,`Title`,`Name`,`CounselTypeID`,`TermFr
 (97,'Shri','N Amaresh\r\n',3,'2018-03-20','2021-03-19','#25, Sriram, Kaveri Extension, Mariyannapalya, Bangalore - 560024\r\n','9449612093; 9902908909\r\n','amareshlaw@amail.com\r\n',NULL,2,1,NULL),
 (98,'Shri','Vishnu Bhat\r\n',3,'2018-03-20','2021-03-19','# 13/1, Vasistha, 5th Main Road, Palace Guttahalli, Bangalore - 560003\r\n','9448669491\r\n','vishnubhatadvocate@gmail.com\r\n','080-23468046',2,1,NULL),
 (99,'Shri','K Gajendra Vasu\r\n',3,'2018-03-20','2021-03-19','R K Nilaya, # 8, (old No. 66/B), M T Street, Kodihalli Main Road, Indiranagar, 2nd Stage, Bangalore - 560008\r\n','9845261965\r\n','gajendravasu@rediffmail.com\r\n',NULL,2,1,NULL),
-(100,'Shri','M Vasudeva Rao\r\n',3,'2018-03-20','2021-04-02','# 003, Premier Residency, No.1, Lazor Road, Richards Town, Bangalore – 560 005\r\n','9019122209\r\n','mvrao.counsel@gmail.com\r\n','080-41735522',2,1,NULL),
+(100,'Shri','M Vasudeva Rao',3,'2018-03-20','2021-04-02','# 003, Premier Residency, No.1, Lazor Road, Richards Town, Bangalore – 560 005\r\n','9019122209\r\n','mvrao.counsel@gmail.com\r\n','080-41735522',2,1,NULL),
 (101,'Shri','H R Sreedhara\r\n',5,'2018-03-20','2021-03-19','# 24, 2nd Floor, 12th A Cross, 9th Main, Vayalikaval, Bangalore - 560003\r\n','9449344184\r\n','sreedharaheggodu@qmail.com\r\n',NULL,2,1,NULL),
 (102,'Shri','Syed Murtuja Kazi\r\n',5,'2018-03-20','2021-03-19','D A 101, PWD Quarters, KHB Main Road, Kaval Byrasandra, R T Nagar Post, Bangalore\r\n','9900120155\r\n',NULL,NULL,2,1,NULL),
 (103,'Shri','N B Patil\r\n',5,'2018-03-20','2021-03-19','# 7/1, Mallayya Complex, 5th Main, Near Kanti Sweets, Ganganagar, Bangalore - 560032\r\n','9448172851; 9972385054\r\n','nbpatiladv@qmail.com\r\n',NULL,2,1,NULL),
@@ -312,7 +312,7 @@ CREATE TABLE `departmentdetails` (
   `Address` varchar(5000) DEFAULT NULL,
   `TypeOfAddress` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`DepartmentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
 
 /*Data for the table `departmentdetails` */
 
@@ -340,7 +340,7 @@ insert  into `departmentdetails`(`DepartmentID`,`DepartmentName`,`MinistryID`,`A
 (21,'Revenue',17,NULL,NULL),
 (22,'Animal Husbandry & Dairying',18,NULL,NULL),
 (23,'Fisheries',18,NULL,NULL),
-(24,'Health & Family Welfare',20,NULL,NULL),
+(24,'Health',20,NULL,NULL),
 (25,'Health Research',20,NULL,NULL),
 (26,'Heavy Industry',21,NULL,NULL),
 (27,'Public Enterprises',21,NULL,NULL),
@@ -371,8 +371,10 @@ insert  into `departmentdetails`(`DepartmentID`,`DepartmentName`,`MinistryID`,`A
 (52,'Social Justice AND Empowerment',44,NULL,NULL),
 (53,'Sports',51,NULL,NULL),
 (54,'Youth Affairs',51,NULL,NULL),
-(55,'Atomic Energy',52,NULL,NULL),
-(56,'SPACE',52,NULL,NULL);
+(55,'Atomic Energy',54,NULL,NULL),
+(56,'SPACE',54,NULL,NULL),
+(57,'Military Affairs',11,NULL,NULL),
+(58,'Family Welfare',20,NULL,NULL);
 
 /*Table structure for table `highcourtregister` */
 
@@ -408,7 +410,7 @@ CREATE TABLE `ministrydetails` (
   `Address` varchar(5000) DEFAULT NULL,
   `TypeOfAddress` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`MinistryID`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ministrydetails` */
 
@@ -436,7 +438,7 @@ insert  into `ministrydetails`(`MinistryID`,`MinistryName`,`Address`,`TypeOfAddr
 (21,'Heavy Industries & Public Enterprises',NULL,NULL),
 (22,'Home Affairs',NULL,NULL),
 (23,'Housing & Urban Affairs',NULL,NULL),
-(24,'Human Resources Development',NULL,NULL),
+(24,'Education',NULL,NULL),
 (25,'Information & Broadcasting',NULL,NULL),
 (26,'Jal Shakti',NULL,NULL),
 (27,'Labour & Employment',NULL,NULL),
@@ -464,7 +466,9 @@ insert  into `ministrydetails`(`MinistryID`,`MinistryName`,`Address`,`TypeOfAddr
 (49,'Tribal Affairs',NULL,NULL),
 (50,'Women & Child Development',NULL,NULL),
 (51,'Youth Affairs & Sports',NULL,NULL),
-(52,'NoMinistry',NULL,NULL);
+(52,'Planning',NULL,NULL),
+(53,'Prime Minister\'s Office',NULL,NULL),
+(54,'NoMinistry',NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

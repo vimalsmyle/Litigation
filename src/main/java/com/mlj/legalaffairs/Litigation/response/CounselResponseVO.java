@@ -22,6 +22,7 @@ public class CounselResponseVO {
 	private String mobileNumber;
 	private String emailID;
 	private String telephoneNumber;
+	private String courtType;
 	private String remarks;
 	
 	private List<CounselResponseVO> data;
@@ -128,6 +129,14 @@ public class CounselResponseVO {
 
 	public void setAbbrevation(String abbrevation) {
 		this.abbrevation = abbrevation;
+	}
+
+	public String getCourtType() {
+		return courtType;
+	}
+
+	public void setCourtType(String courtType) {
+		this.courtType = courtType;
 	}
 
 }

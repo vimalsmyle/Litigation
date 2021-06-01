@@ -31,6 +31,7 @@ public class RegisterRequestVO {
 	private String remarks;
 	private boolean old;
 	private String respondents;
+	private boolean enclosure;
 	
 	public long getHighCourtID() {
 		return highCourtID;
@@ -163,6 +164,12 @@ public class RegisterRequestVO {
 	}
 	public void setFiledByTitle(String filedByTitle) {
 		this.filedByTitle = filedByTitle;
+	}
+	public boolean isEnclosure() {
+		return enclosure;
+	}
+	public void setEnclosure(boolean enclosure) {
+		this.enclosure = enclosure;
 	}
 	
 }
