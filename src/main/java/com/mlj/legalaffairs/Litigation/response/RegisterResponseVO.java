@@ -26,7 +26,10 @@ public class RegisterResponseVO {
 	private String ministryName;
 	private String departmentName;
 	private String counselName;
-	private String date;
+	private String registeredDate;
+	private String modifiedDate;
+	private String renominatedCounselName;
+	private String renominatedDate;
 	private String remarks;
 	
 	private List<RegisterResponseVO> data;
@@ -127,14 +130,6 @@ public class RegisterResponseVO {
 		this.counselName = counselName;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 	public String getRemarks() {
 		return remarks;
 	}
@@ -174,5 +169,36 @@ public class RegisterResponseVO {
 	public void setNumberOfCases(int numberOfCases) {
 		this.numberOfCases = numberOfCases;
 	}
-	
+
+	public String getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(String registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	public String getRenominatedCounselName() {
+		return renominatedCounselName;
+	}
+
+	public void setRenominatedCounselName(String renominatedCounselName) {
+		this.renominatedCounselName = renominatedCounselName;
+	}
+
+	public String getRenominatedDate() {
+		return renominatedDate;
+	}
+
+	public void setRenominatedDate(String renominatedDate) {
+		this.renominatedDate = renominatedDate;
+	}
 }

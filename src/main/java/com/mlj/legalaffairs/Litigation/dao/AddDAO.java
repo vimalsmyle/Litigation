@@ -24,11 +24,10 @@ import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 
 import com.mlj.legalaffairs.Litigation.constants.DataBaseConstants;
 import com.mlj.legalaffairs.Litigation.constants.ExtraConstants;
+import com.mlj.legalaffairs.Litigation.request.CounselRequestVO;
 import com.mlj.legalaffairs.Litigation.request.RegisterRequestVO;
 import com.mlj.legalaffairs.Litigation.response.ResponseVO;
 import com.mlj.legalaffairs.Litigation.response.CaseVO;
@@ -94,7 +93,7 @@ public class AddDAO {
 		return counselList;
 	}
 
-	public List<RegisterResponseVO> getHighCourtNominationdetails(int courtType, int year) throws SQLException {
+	public List<RegisterResponseVO> getNominationdetails(int courtType, int year) throws SQLException {
 		// TODO Auto-generated method stub
 		
 		Connection con = null;
@@ -109,7 +108,7 @@ public class AddDAO {
 			registerList = new LinkedList<RegisterResponseVO>();
 			String query = "SELECT * FROM <change> <fileYear> = ";
 			query = query.replaceAll("<change>", (courtType == 1 ? "highcourtregister" : "catregister"));
-			pstmt = con.prepareStatement(query.replaceAll("<fileYear>", (year != 0 ? "FileYear = "+ year : "")));
+			pstmt = con.prepareStatement(query.replaceAll("<fileYear>", (year != 0 ? "WHERE FileYear = "+ year : "")));
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
@@ -141,14 +140,20 @@ public class AddDAO {
 					registerResponseVO.setDepartmentName(rs2.getString("DepartmentName"));
 				}
 				
-				PreparedStatement counsel = con.prepareStatement("SELECT Name FROM counseldetails WHERE CounselID = "+rs.getInt("CounselID"));
+				PreparedStatement counsel = con.prepareStatement("SELECT Name FROM counseldetails WHERE CounselID = ");
+				counsel.setInt(1, rs.getInt("CounselID"));
 				ResultSet rs3 = counsel.executeQuery();
 				
 				if(rs3.next()) {
 					registerResponseVO.setCounselName(rs3.getString("Name"));
+					if(rs.getInt("RenominatedCounselID") != 0) {
+						counsel.setInt(1, rs.getInt("RenominatedCounselID"));
+						ResultSet rs4 = counsel.executeQuery();
+						registerResponseVO.setRenominatedCounselName(rs4.getString("Name"));
+					}
 				}
-				
-				registerResponseVO.setDate(dateformatter(rs.getString("Date")));
+				registerResponseVO.setRenominatedDate(dateformatter(rs.getString("RenominatedDate")));
+				registerResponseVO.setRegisteredDate(dateformatter(rs.getString("RegisteredDate")));
 				registerResponseVO.setRemarks(rs.getString("Remarks"));
 				
 				registerList.add(registerResponseVO);
@@ -179,7 +184,7 @@ public class AddDAO {
 
 		try {
 			con = getConnection();
-			String query = "INSERT INTO <register> (FileNumber, FileYear, FiledBy, CaseTypeID, CaseNumber, CaseYear, <change1> NumberOfCases, MinistryID, DepartmentID, CounselID, Date, Remarks) VALUES (?, ?, ?, ?, ?, ?, <change2> ?, ?, ?, ?, NOW(), ?)";
+			String query = "INSERT INTO <register> (FileNumber, FileYear, FiledBy, CaseTypeID, CaseNumber, CaseYear, <change1> NumberOfCases, MinistryID, DepartmentID, CounselID, CounselOnRecordID, RegisteredDate, Remarks) VALUES (?, ?, ?, ?, ?, ?, <change2> ?, ?, ?, ?, ?, NOW(), ?)";
 			query = query.replaceAll("<change1>", registerRequestVO.getCourtType() == 1 ? "FRNumber, FRYear," : "");
 			query = query.replaceAll("<change2>", registerRequestVO.getCourtType() == 1 ? "?, ?," : "");
 			query = query.replaceAll("<register>", registerRequestVO.getCourtType() == 1 ? "highcourtregister" : "cattregister"); 
@@ -199,7 +204,8 @@ public class AddDAO {
 				pstmt.setInt(10, registerRequestVO.getMinistryID());
 				pstmt.setInt(11, registerRequestVO.getDepartmentID());
 				pstmt.setInt(12, registerRequestVO.getCounselID());
-				pstmt.setString(13, registerRequestVO.getRemarks());
+				pstmt.setInt(13, registerRequestVO.getCounselOnRecordID());
+				pstmt.setString(14, registerRequestVO.getRemarks());
 			
 			} else {
 				
@@ -207,7 +213,8 @@ public class AddDAO {
 				pstmt.setInt(8, registerRequestVO.getMinistryID());
 				pstmt.setInt(9, registerRequestVO.getDepartmentID());
 				pstmt.setInt(10, registerRequestVO.getCounselID());
-				pstmt.setString(11, registerRequestVO.getRemarks());
+				pstmt.setInt(11, registerRequestVO.getCounselOnRecordID());
+				pstmt.setString(12, registerRequestVO.getRemarks());
 				
 			}
 			
@@ -215,6 +222,7 @@ public class AddDAO {
 				
 				if(!registerRequestVO.isOld()) {
 				// create Nomination letter in doc format
+				//change accordingly for additional sg
 				
 				CaseVO caseVO = new CaseVO();
 				if(registerRequestVO.getCaseTypeID() != 78) {caseVO = fetchCaseDetails(registerRequestVO.getCaseTypeID());}
@@ -798,7 +806,156 @@ public class AddDAO {
 			con.close();
 		}
 		return responsevo;
+	}
+	
+	public ResponseVO editNominationDetails(RegisterRequestVO registerRequestVO, long id) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			String query = "INSERT INTO <register> (CaseNumber, CaseYear, <change1> CounselID, ModifiedDate, RenominatedCounselID, RenominatedDate, Remarks) VALUES (?, ?, <change2> ?, NOW(), ?, NOW(), ?)";
+			query = query.replaceAll("<change1>", registerRequestVO.getCourtType() == 1 ? "FRNumber, FRYear," : "");
+			query = query.replaceAll("<change2>", registerRequestVO.getCourtType() == 1 ? "?, ?," : "");
+			query = query.replaceAll("<register>", registerRequestVO.getCourtType() == 1 ? "highcourtregister" : "cattregister"); 
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, registerRequestVO.getCaseNumber());
+			pstmt.setInt(2, registerRequestVO.getCaseYear());
+			
+			if(registerRequestVO.getCourtType() == 1) {
+			
+				pstmt.setString(3, registerRequestVO.getFrNumber());
+				pstmt.setInt(4, registerRequestVO.getFrYear());
+				pstmt.setInt(5, registerRequestVO.getCounselID());
+				pstmt.setInt(6, registerRequestVO.getRenominatedCounselID());
+				pstmt.setString(7, registerRequestVO.getRemarks());
+			
+			} else {
+				
+				pstmt.setInt(3, registerRequestVO.getCounselID());
+				pstmt.setInt(4, registerRequestVO.getRenominatedCounselID());
+				pstmt.setString(5, registerRequestVO.getRemarks());
+				
+			}
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Register Updated Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
 		}
+		return responsevo;
+	}
+	
+	public ResponseVO addCounsel(CounselRequestVO counselvo) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("INSERT INTO counseldetails (Title, Name, CounselTypeID, TermFrom, TermUpto, Address, MobileNumber, EmailID, TelephoneNumber, CourtID, Remarks, RegisteredDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+			pstmt.setString(1, counselvo.getTitle());
+			pstmt.setString(2, counselvo.getName());
+			pstmt.setInt(3, counselvo.getCounselTypeID());
+			pstmt.setString(4, counselvo.getTermFrom());
+			pstmt.setString(5, counselvo.getTermUpto());
+			pstmt.setString(6, counselvo.getAddress());
+			pstmt.setString(7, counselvo.getMobileNumber());
+			pstmt.setString(8, counselvo.getEmailID());
+			pstmt.setString(9, counselvo.getTelephoneNumber());
+			pstmt.setInt(10, counselvo.getCourtID());
+			pstmt.setString(11, counselvo.getRemarks());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Counsel Added Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
+
+	public ResponseVO editCounsel(CounselRequestVO counselvo) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("UPDATE counseldetails SET Title = ?, Name = ?, CounselTypeID = ?, TermFrom = ?, TermUpto = ?, Address = ?, MobileNumber = ?, EmailID = ?, TelephoneNumber = ?, CourtID = ?, Remarks = ?, ModifiedDate = NOW() WHERE CounselID = ?");
+			pstmt.setString(1, counselvo.getTitle());
+			pstmt.setString(2, counselvo.getName());
+			pstmt.setInt(3, counselvo.getCounselTypeID());
+			pstmt.setString(4, counselvo.getTermFrom());
+			pstmt.setString(5, counselvo.getTermUpto());
+			pstmt.setString(6, counselvo.getAddress());
+			pstmt.setString(7, counselvo.getMobileNumber());
+			pstmt.setString(8, counselvo.getEmailID());
+			pstmt.setString(9, counselvo.getTelephoneNumber());
+			pstmt.setInt(10, counselvo.getCourtID());
+			pstmt.setString(11, counselvo.getRemarks());
+			pstmt.setInt(12, counselvo.getCounselID());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Counsel Details Updated Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
 	
 	public static String dateformatter(String date) throws ParseException {
 		

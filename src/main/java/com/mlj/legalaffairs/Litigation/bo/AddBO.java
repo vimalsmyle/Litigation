@@ -3,6 +3,8 @@
  */
 package com.mlj.legalaffairs.Litigation.bo;
 
+import java.sql.SQLException;
+
 import com.mlj.legalaffairs.Litigation.dao.AddDAO;
 import com.mlj.legalaffairs.Litigation.exceptions.BusinessException;
 import com.mlj.legalaffairs.Litigation.request.CounselRequestVO;
@@ -17,14 +19,14 @@ public class AddBO {
 	
 	AddDAO adddao = new AddDAO();
 
-	public ResponseVO addcounsel(CounselRequestVO counselvo) throws BusinessException{
+	public ResponseVO addcounsel(CounselRequestVO counselvo) throws BusinessException, SQLException{
 		// TODO Auto-generated method stub
-		return null;
+		return adddao.addCounsel(counselvo);
 	}
 
-	public ResponseVO editcounsel(CounselRequestVO counselvo) throws BusinessException{
+	public ResponseVO editcounsel(CounselRequestVO counselvo) throws BusinessException, SQLException{
 		// TODO Auto-generated method stub
-		return null;
+		return adddao.editCounsel(counselvo);
 	}
 
 	public ResponseVO addNomination(RegisterRequestVO registerRequestVO)  throws Exception{
@@ -33,6 +35,11 @@ public class AddBO {
 		ResponseVO responsevo = adddao.addNomination(registerRequestVO);
 		
 		return responsevo;
+	}
+
+	public ResponseVO editNominationDetails(RegisterRequestVO registerRequestVO, long id) throws SQLException {
+		// TODO Auto-generated method stub
+		return adddao.editNominationDetails(registerRequestVO, id);
 	}
 
 }

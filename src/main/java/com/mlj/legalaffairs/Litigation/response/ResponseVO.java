@@ -14,6 +14,7 @@ public class ResponseVO {
 	private String result;
 	private String Message;
 	private List<CounselResponseVO> counseldetails;
+	private UserDetails userDetails;
 	
 	public String getResult() {
 		return result;
@@ -27,4 +28,17 @@ public class ResponseVO {
 	public void setMessage(String message) {
 		Message = message;
 	}
+	public List<CounselResponseVO> getCounseldetails() {
+		return counseldetails;
+	}
+	public void setCounseldetails(List<CounselResponseVO> counseldetails) {
+		this.counseldetails = counseldetails;
+	}
+	public UserDetails getUserDetails() {
+		return userDetails;
+	}
+	public void setUserDetails(UserDetails userDetails) {
+		this.userDetails = userDetails;
+	}
+	
 }

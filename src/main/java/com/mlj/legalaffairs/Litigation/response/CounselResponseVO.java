@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class CounselResponseVO {
 	
-	private int CounselID;
+	private int counselID;
 	private String title;
 	private String name;
 	private String counselType;
@@ -28,11 +28,11 @@ public class CounselResponseVO {
 	private List<CounselResponseVO> data;
 
 	public int getCounselID() {
-		return CounselID;
+		return counselID;
 	}
 
 	public void setCounselID(int counselID) {
-		CounselID = counselID;
+		this.counselID = counselID;
 	}
 
 	public String getTitle() {

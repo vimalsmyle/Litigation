@@ -28,6 +28,7 @@ public class RegisterRequestVO {
 	private int departmentID;
 	private int counselID;
 	private int counselOnRecordID;
+	private int renominatedCounselID;
 	private String remarks;
 	private boolean old;
 	private String respondents;
@@ -170,6 +171,12 @@ public class RegisterRequestVO {
 	}
 	public void setEnclosure(boolean enclosure) {
 		this.enclosure = enclosure;
+	}
+	public int getRenominatedCounselID() {
+		return renominatedCounselID;
+	}
+	public void setRenominatedCounselID(int renominatedCounselID) {
+		this.renominatedCounselID = renominatedCounselID;
 	}
 	
 }

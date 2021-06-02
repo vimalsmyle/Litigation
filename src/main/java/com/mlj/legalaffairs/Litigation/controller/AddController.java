@@ -5,6 +5,7 @@ package com.mlj.legalaffairs.Litigation.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,18 +84,34 @@ public class AddController {
 	public @ResponseBody RegisterResponseVO HighCourtRegisterdetails(@PathVariable("courttype") int courtType, @PathVariable("year") int year) throws SQLException {
 
 		RegisterResponseVO hcresponsevo = new RegisterResponseVO();
-
-		hcresponsevo.setData(adddao.getHighCourtNominationdetails(courtType, year));
+		
+		hcresponsevo.setData(adddao.getNominationdetails(courtType, year));
 
 		return hcresponsevo;
 	}
 
 	@RequestMapping(value = "/nomination/add", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public @ResponseBody ResponseVO addnomination(@RequestBody RegisterRequestVO hcvo) throws ClassNotFoundException,
+	public @ResponseBody ResponseVO addNomination(@RequestBody RegisterRequestVO registerRequestVO) throws ClassNotFoundException,
 			SQLException, BusinessException, IOException {
 		ResponseVO responsevo = new ResponseVO();
 		try {
-			 responsevo = addbo.addNomination(hcvo);
+			 responsevo = addbo.addNomination(registerRequestVO);
+			
+		} catch (Exception e) {
+			responsevo.setResult("Failure");
+			responsevo.setMessage(e.getMessage());
+		}
+
+		return responsevo;
+	}
+	
+	@RequestMapping(value = "/nomination/edit/{id}", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public @ResponseBody ResponseVO editNomination(@RequestBody RegisterRequestVO registerRequestVO, @PathVariable("id") long id) throws ClassNotFoundException,
+			SQLException, BusinessException, IOException {
+		ResponseVO responsevo = new ResponseVO();
+		
+		try {
+			 responsevo = addbo.editNominationDetails(registerRequestVO, id);
 			
 		} catch (Exception e) {
 			responsevo.setResult("Failure");
