@@ -1,0 +1,54 @@
+high court
+
+{
+    "courtType" : 1,
+    "fileNumber" : "1",
+    "fileYear" : 2021,
+    "filedByTitle" : "Shri",
+    "filedBy" : "Vimal",
+    "filedAgainst" : "Union of India",
+    "caseTypeID" : 68,
+    "caseType" : "Writ Petition",
+    "caseNumber" : "0",
+    "caseYear" : 2021,
+    "frNumber" : "12345",
+    "frYear" : 2021,
+    "numberOfCases" : 1,
+    "ministryID" : 28,
+    "departmentID" : 41,
+    "counselID" : 2,
+    "counselOnRecordID" : 0,
+    "remarks" : "nomination",
+    "old" : false,
+    "respondents" : "0",
+    "enclosure" : true
+
+}
+
+
+cat
+
+{
+    "courtType" : 2,
+    "fileNumber" : "1",
+    "fileYear" : 2021,
+    "filedByTitle" : "Shri",
+    "filedBy" : "Vimal",
+    "filedAgainst" : "Union of India",
+    "caseTypeID" : 74,
+    "caseType" : "Writ Petition",
+    "caseNumber" : "123",
+    "caseYear" : 2021,
+    "frNumber" : "12345",
+    "frYear" : 2021,
+    "numberOfCases" : 1,
+    "ministryID" : 28,
+    "departmentID" : 41,
+    "counselID" : 96,
+    "counselOnRecordID" : 0,
+    "remarks" : "nomination",
+    "old" : false,
+    "respondents" : "0",
+    "enclosure" : true
+
+}

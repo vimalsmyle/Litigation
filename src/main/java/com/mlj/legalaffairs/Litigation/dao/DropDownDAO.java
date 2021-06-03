@@ -38,11 +38,11 @@ public class DropDownDAO {
 		try {
 			con = getConnection();
 			
-			PreparedStatement pstmt = con.prepareStatement("SELECT CourtID, CourtName FROM courtdetails");
+			PreparedStatement pstmt = con.prepareStatement("SELECT CourtID, Abbrevation FROM courtdetails");
 			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				courts.put(rs.getInt("CourtID"), rs.getString("CourtName"));
+				courts.put(rs.getInt("CourtID"), rs.getString("Abbrevation"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -229,11 +229,12 @@ public class AddDAO {
 				if(!registerRequestVO.isOld()) {
 				// create Nomination letter in doc format
 				//change accordingly for additional sg
+				// change accordingly for letter requests also
 				
 				CaseVO caseVO = new CaseVO();
 				if(registerRequestVO.getCaseTypeID() != 78) {caseVO = fetchCaseDetails(registerRequestVO.getCaseTypeID());}
 				
-				String caseNumber = (registerRequestVO.getCourtType() == 1 ? (registerRequestVO.getCaseTypeID() != 78 ? (!registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? (caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()+"/"+registerRequestVO.getCaseYear()) : (registerRequestVO.getCaseType()+" No: /"+registerRequestVO.getCaseYear()+"(F.R No: "+registerRequestVO.getFrNumber()+"/"+registerRequestVO.getFrYear()+")")) : registerRequestVO.getCaseNumber() ): (caseVO.getAbbrevation() + " No: 170/" + registerRequestVO.getCaseNumber() + "/" + registerRequestVO.getCaseYear()));
+				String caseNumber = (registerRequestVO.getCourtType() == 1 ? (registerRequestVO.getCaseTypeID() != 78 ? (!registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? (caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()+"/"+registerRequestVO.getCaseYear()) : (registerRequestVO.getCaseType()+" No: /"+registerRequestVO.getCaseYear()+" (F.R No: "+registerRequestVO.getFrNumber()+"/"+registerRequestVO.getFrYear()+")")) : registerRequestVO.getCaseNumber() ): (caseVO.getAbbrevation() + " No: 170/" + registerRequestVO.getCaseNumber() + "/" + registerRequestVO.getCaseYear()));
 				drivename = drivename.replaceAll("<folder>", registerRequestVO.getCourtType() == 1 ? "High Court Nominations" : "CAT Nominations");
 				drivename = drivename.replaceAll("<folder1>", registerRequestVO.getCourtType() == 1 ? currentdate.getMonth()+"/" : "");
 				
@@ -310,12 +311,13 @@ public class AddDAO {
 				
 				XWPFRun noteSheetPara2Run = noteSheetPara2.createRun(); 
 				
-				CounselResponseVO counselResponseVO = null; 
+				CounselResponseVO counselResponseVO = null;
+				CounselResponseVO counselOnRecordResponseVO = null;
 
 				if(registerRequestVO.getCounselOnRecordID() != 0) {
 					counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
-					CounselResponseVO counselOnRecordResponseVO = fetchCounselDetails(registerRequestVO.getCounselOnRecordID());	
-					noteSheetPara2Run.setText("                As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle().trim()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() +" and " + counselOnRecordResponseVO.getTitle().trim()+". "+ counselOnRecordResponseVO.getName().trim()+ ", "+ counselOnRecordResponseVO.getCounselType().trim()+" is put up for signature please.");
+					counselOnRecordResponseVO = fetchCounselDetails(registerRequestVO.getCounselOnRecordID());	
+					noteSheetPara2Run.setText("                As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle().trim()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() +" and " + counselOnRecordResponseVO.getTitle().trim()+". "+ counselOnRecordResponseVO.getName().trim()+ ", "+ counselOnRecordResponseVO.getCounselType().trim()+" as an advocate on record to assist the Ld. ASG is put up for signature please.");
 				} else {
 					counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
 					noteSheetPara2Run.setText("                As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle().trim()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() +" is put up for signature please.");
@@ -450,8 +452,6 @@ public class AddDAO {
 					ALASignRun.addCarriageReturn();
 					ALASignRun.addCarriageReturn();
 					ALASignRun.addCarriageReturn();
-					ALASignRun.addCarriageReturn();
-					ALASignRun.addCarriageReturn();
 				}
 				
 				XWPFParagraph logo = document.createParagraph();
@@ -528,7 +528,7 @@ public class AddDAO {
 				
 				XWPFParagraph subject = document.createParagraph();
 				subject.setAlignment(ParagraphAlignment.BOTH);
-				subject.setSpacingAfter(1);
+				subject.setSpacingAfter(0);
 				
 				XWPFRun subjectRun = subject.createRun();
 				subjectRun.setText("Sub: Nomination of " + counselResponseVO.getAbbrevation() + " in case ");
@@ -556,17 +556,22 @@ public class AddDAO {
 				XWPFParagraph para1 = document.createParagraph();
 				para1.setAlignment(ParagraphAlignment.BOTH);
 				para1.setSpacingAfter(0);
+				para1.setSpacingAfterLines(0);
 				
 				XWPFRun para1Run = para1.createRun();
 				para1Run.setText("                A copy of the " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) + " received from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka, Bangalore is enclosed. Please note that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent " : "Hon`ble Central Administrative Tribunal, Bangalore is enclosed. Please note that " + counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent "));
 				para1Run.setFontFamily("Calibri");para1Run.setColor(fontColour); para1Run.setFontSize(10);
 				
 				XWPFRun para11Run = para1.createRun();
-				para11Run.setText((!registerRequestVO.getRespondents().equalsIgnoreCase("0") ? "Respondent No(s): " + registerRequestVO.getRespondents() : "Union of India "));
+				para11Run.setText((!registerRequestVO.getRespondents().equalsIgnoreCase("0") ? "Respondent No(s): " + registerRequestVO.getRespondents() : "Union of India"));
 				para11Run.setFontFamily("Calibri");para11Run.setColor(fontColour); para11Run.setFontSize(10);para11Run.setBold(true);
 				
 				XWPFRun para12Run = para1.createRun();
-				para12Run.setText((registerRequestVO.getCourtType() == 1 ? " before the Hon`ble High Court of Karnataka, Bangalore." : " before the Hon`ble Central Administrative Tribunal, Bangalore."));
+				if(registerRequestVO.getCounselOnRecordID() != 0) {
+					para12Run.setText(". "+counselOnRecordResponseVO.getTitle().trim()+". "+counselOnRecordResponseVO.getName().trim()+", "+ counselOnRecordResponseVO.getCounselType().trim() +" has been nominated to assist the Learned Additional Solicitor General as an Advocate on Record in the above matter.");
+				} else {
+					para12Run.setText((registerRequestVO.getCourtType() == 1 ? " before the Hon`ble High Court of Karnataka, Bangalore." : " before the Hon`ble Central Administrative Tribunal, Bangalore."));	
+				}
 				para12Run.setFontFamily("Calibri");para12Run.setColor(fontColour); para12Run.setFontSize(10);
 				para12Run.addCarriageReturn();
 				
@@ -576,10 +581,15 @@ public class AddDAO {
 				
 				XWPFRun para2Run = para2.createRun();
 				if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
-					para2Run.setText("                The said Counsel is being requested to intimate the " + caseVO.getAbbrevation() +" No. /"+ registerRequestVO.getCaseYear() +" allotted to the FR No."+ registerRequestVO.getFrNumber() +"/" + registerRequestVO.getFrYear() + " to the department/this Ministry as soon as possible.");
+
+					if(registerRequestVO.getCounselOnRecordID()!= 0) {
+						para2Run.setText("                The said Counsel "+ (registerRequestVO.getCounselOnRecordID()!=0 ? "("+counselOnRecordResponseVO.getTitle().trim()+". "+ counselOnRecordResponseVO.getName().trim()+")" : "") + " is being requested to intimate the " + caseVO.getAbbrevation() +" No. /"+ registerRequestVO.getCaseYear() +" allotted to the FR No."+ registerRequestVO.getFrNumber() +"/" + registerRequestVO.getFrYear() + " to the department/this Ministry as soon as possible.");
+					} else {
+						para2Run.setText("                The said Counsel is being requested to intimate the " + caseVO.getAbbrevation() +" No: /"+ registerRequestVO.getCaseYear() +" allotted to the FR No: "+ registerRequestVO.getFrNumber() +"/" + registerRequestVO.getFrYear() + " to the department/this Ministry as soon as possible.");
+					}
 					para2Run.setUnderline(UnderlinePatterns.SINGLE);
 				} else {
-					para2Run.setText("                Therefore, the department is advised to contact the said Counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. ");
+					para2Run.setText("                Therefore, the department is advised to contact the "+(registerRequestVO.getCounselOnRecordID() !=0 ? "Learned Addl.SG ("+counselResponseVO.getTitle().trim() + ", " + counselResponseVO.getName().trim() + ") and "+ counselOnRecordResponseVO.getCounselType().trim() + " ("+counselOnRecordResponseVO.getTitle().trim()+". " + counselOnRecordResponseVO.getName().trim()+") immediately along with all papers for doing the needful in the matter" : "said counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. "));
 				}
 				para2Run.setFontFamily("Calibri");para2Run.setColor(fontColour); para2Run.setFontSize(10);
 				para2Run.addCarriageReturn();
@@ -592,7 +602,7 @@ public class AddDAO {
 				if(!registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
 					para3Run.setText("                The department is further requested to make correspondence with the Counsel directly and to take follow up action in the matter.");
 				} else {
-					para3Run.setText("                Therefore, the department is advised to contact the said Counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. ");
+					para3Run.setText("                Therefore, the department is advised to contact the "+(registerRequestVO.getCounselOnRecordID() !=0 ? "Learned Addl.SG ("+counselResponseVO.getTitle().trim() + ", " + counselResponseVO.getName().trim() + ") and "+ counselOnRecordResponseVO.getCounselType().trim() + "("+counselOnRecordResponseVO.getTitle().trim()+". " + counselOnRecordResponseVO.getName()+") immediately along with all papers for doing the needful in the matter" : "said counsel (whose contact details are given below) with all relevant papers and files for preparation of the case on behalf of the department till the disposal of the case or expiry of his/her term of engagement, whichever is earlier. "));
 				}
 				para3Run.setFontFamily("Calibri");para3Run.setColor(fontColour); para3Run.setFontSize(10);
 				para3Run.addCarriageReturn();
@@ -603,27 +613,29 @@ public class AddDAO {
 				
 				XWPFRun note1Run = note.createRun();
 				if(registerRequestVO.getCourtType() == 1) {
-					if(counselResponseVO.getAbbrevation().equalsIgnoreCase("CGC")) {
-						note1Run.setText("NOTE: 1. Appearance fees & drafting fees including conference fee are paid by this Ministry. However, Misc. expenses i.e. typing, photocopy, postage, Court Fee, Notarization etc., are to be borne by the concerned Department at their own satisfaction after taking into account the details of miscellaneous expenses actually incurred. ");
-						note1Run.setUnderline(UnderlinePatterns.SINGLE);
-					} else {
-						note1Run.setText("NOTE: 1. The fee payable to Senior Panel Counsel in the case will be borne by the concerned department as per the Senior Panel Counsel, terms and conditions. ");
-						note1Run.setUnderline(UnderlinePatterns.SINGLE);
+					if(counselResponseVO.getAbbrevation().equalsIgnoreCase("CGC") || counselResponseVO.getAbbrevation().equalsIgnoreCase("Asst.SG")) {
+						note1Run.setText("NOTE: 1. Appearance fees & drafting fees including conference fee are paid by this Ministry. However, Misc. expenses i.e. typing, photocopy, postage, Court Fee, Notarization etc., are to be borne by the concerned Department at their own satisfaction after taking into account the details of miscellaneous expenses actually incurred. 2. ");
+					} else if (counselResponseVO.getAbbrevation().equalsIgnoreCase("SPC")) {
+						note1Run.setText("NOTE: 1. The fee payable to Senior Panel Counsel in the case will be borne by the concerned department as per the Senior Panel Counsel, terms and conditions. 2. ");
+					} else if (counselResponseVO.getAbbrevation().equalsIgnoreCase("Ld.ASG")) {
+						note1Run.setText("NOTE: 1. The fee payable to the Ld. Addl. SG in the case will be borne by the concerned department as per Law Officer (Conditions of Service) Rules, 1987 as amended from time to time. " + (counselOnRecordResponseVO.getCounselType().equalsIgnoreCase("CGC") ? "2. Appearance fees & drafting fees including conference fee are paid by this Ministry. However, Misc. expenses i.e., typing, photocopy, postage, Court Fee, Notarization etc., are to be borne by the concerned Department at their own satisfaction after taking into account the details of miscellaneous expenses actually incurred. 3. " : "NOTE: 2. The fee payable to Senior Panel Counsel in the case will be borne by the concerned department as per the Senior Panel Counsel, terms and conditions. 3. "));
 					}
+					note1Run.setUnderline(UnderlinePatterns.SINGLE);
 					
 				} else {
 					if(counselResponseVO.getAbbrevation().equalsIgnoreCase("ACGSC")) {
-						note1Run.setText("NOTE: 1. The fee payable to the Additional Central Government Standing Counsel in the case will be borne by the concerned department as per O.M No. 26(2)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. ");
-						note1Run.setUnderline(UnderlinePatterns.SINGLE);
-					} else {
-						note1Run.setText("NOTE: 1. The fee payable to the Senior Panel Counsel in the case will be borne by the concerned department as per O.M No. 26(1)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. ");
-						note1Run.setUnderline(UnderlinePatterns.SINGLE);
+						note1Run.setText("NOTE: 1. The fee payable to the Additional Central Government Standing Counsel in the case will be borne by the concerned department as per O.M No. 26(2)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. 2. ");
+					} else if(counselResponseVO.getAbbrevation().equalsIgnoreCase("SPC")) {
+						note1Run.setText("NOTE: 1. The fee payable to the Senior Panel Counsel in the case will be borne by the concerned department as per O.M No. 26(1)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. 2. ");
+					} else if (counselResponseVO.getAbbrevation().equalsIgnoreCase("Ld.ASG")) {
+						note1Run.setText("NOTE: 1. The fee payable to the Ld. Addl. SG in the case will be borne by the concerned department as per Law Officer (Conditions of Service) Rules, 1987 as amended from time to time. " + (counselOnRecordResponseVO.getCounselType().equalsIgnoreCase("ACGSC") ? "2. The fee payable to the Additional Central Government Standing Counsel in the case will be borne by the concerned department as per O.M No. 26(2)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. 3. " : "NOTE: 2. The fee payable to the Senior Panel Counsel in the case will be borne by the concerned department as per O.M No. 26(1)/1999-Judl. Dated 24.09.1999 r/w O.M. No. 26(1)/2014/Judl. dated 01.01.2015. 3. "));
 					}
+					note1Run.setUnderline(UnderlinePatterns.SINGLE);
 				}
 				note1Run.setFontFamily("Calibri");note1Run.setColor(fontColour); note1Run.setFontSize(10);
 				
 				XWPFRun note2Run = note.createRun();
-				note2Run.setText("2. "+ fileNumber +" may be quoted in all your future correspondences in this regard.");
+				note2Run.setText(fileNumber +" may be quoted in all your future correspondences in this regard.");
 				note2Run.setFontFamily("Calibri");note2Run.setColor(fontColour); note2Run.setFontSize(10);
 				note2Run.setUnderline(UnderlinePatterns.SINGLE);
 				
@@ -650,7 +662,8 @@ public class AddDAO {
 					enclosure1Run.setFontFamily("Calibri");enclosure1Run.setColor(fontColour); enclosure1Run.setFontSize(10);
 					enclosure1Run.addCarriageReturn();
 				} else {
-					faithfullyRun.addCarriageReturn();	
+					faithfullyRun.addCarriageReturn();
+					faithfullyRun.addCarriageReturn();
 				}
 				
 				XWPFParagraph signature = document.createParagraph();
@@ -687,19 +700,34 @@ public class AddDAO {
 				counselDesignationRun.addCarriageReturn();
 				
 				XWPFRun counselAddressRun = counselDetails.createRun();
-				counselAddressRun.setText(counselResponseVO.getAddress().trim()+"; Mobile: "+counselResponseVO.getMobileNumber().trim()+"; Email: "+counselResponseVO.getEmailID().trim()+(!counselResponseVO.getTelephoneNumber().isEmpty() ? "; Telephone:"+counselResponseVO.getTelephoneNumber()+" - ": " - "));
+				counselAddressRun.setText(counselResponseVO.getAddress().trim()+"; Mobile: "+counselResponseVO.getMobileNumber().trim()+"; Email: "+counselResponseVO.getEmailID().trim()+(counselResponseVO.getTelephoneNumber()!= null ? "; Telephone:"+counselResponseVO.getTelephoneNumber()+" - ": " - "));
 				counselAddressRun.setFontFamily("Calibri");counselAddressRun.setColor(fontColour); counselAddressRun.setFontSize(10);
 				
 				XWPFRun counselpara1Run = counselDetails.createRun();
 				counselpara1Run.setFontFamily("Calibri");counselpara1Run.setColor(fontColour); counselpara1Run.setFontSize(10);
 				
 				if(registerRequestVO.getCourtType() == 1) {
-					counselpara1Run.setText("(a) On receipt of this Nomination letter you are requested to: ");
+					if(registerRequestVO.getCounselOnRecordID() != 0) {
+						counselpara1Run.setText("He is requested to do the needful in the above-mentioned case to protect the interest of Union of India.");
+						counselpara1Run.addCarriageReturn();
+						counselpara1Run.addCarriageReturn();
+					} else {
+						counselpara1Run.setText("(a) On receipt of this Nomination letter you are requested to: ");
+					}
 				} else {
-					counselpara1Run.setText("(i). The engagement is governed by the "+(counselResponseVO.getAbbrevation().equalsIgnoreCase("ACGSC") ? "O.M No.26(2)" : "O.M No.26(1)") + ")/1999 -Judl. Dated 24.09.1999 r/w O.M. No.26(1)/2014/Judl. dated 01.01.2015 issued by the Ministry of Law & Justice, Department of Legal Affairs, Shastri Bhavan, New Delhi- 110 001.");
-					counselpara1Run.addCarriageReturn();
-					counselpara1Run.addCarriageReturn();
+					
+					if(registerRequestVO.getCounselOnRecordID() != 0) {
+						counselpara1Run.setText("He is requested to do the needful in the above-mentioned case to protect the interest of Union of India.");
+						counselpara1Run.addCarriageReturn();
+						counselpara1Run.addCarriageReturn();
+					} else {
+						counselpara1Run.setText("(i). The engagement is governed by the "+(counselResponseVO.getAbbrevation().equalsIgnoreCase("ACGSC") ? "O.M No.26(2)" : "O.M No.26(1)") + ")/1999 -Judl. Dated 24.09.1999 r/w O.M. No.26(1)/2014/Judl. dated 01.01.2015 issued by the Ministry of Law & Justice, Department of Legal Affairs, Shastri Bhavan, New Delhi- 110 001.");
+						counselpara1Run.addCarriageReturn();
+						counselpara1Run.addCarriageReturn();
+					}
 				}
+				
+				if(registerRequestVO.getCounselOnRecordID() == 0) {
 				
 				XWPFRun counselpara2Run = counselDetails.createRun();
 				counselpara2Run.setFontFamily("Calibri");counselpara2Run.setColor(fontColour); counselpara2Run.setFontSize(10);
@@ -750,7 +778,7 @@ public class AddDAO {
 					counselpara6Run.setUnderline(UnderlinePatterns.SINGLE);
 					
 					if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
-					counselpara6Run.setText("(ii). Intimate the "+caseVO.getAbbrevation()+" No. /"+ registerRequestVO.getCaseYear()+" allotted to the FR No. "+"/"+ registerRequestVO.getFrYear()+" to this Branch Secretariat and to the concerned department/ Ministry to update our records and also for timely process of your Fee Bill.");
+					counselpara6Run.setText("(ii). Intimate the "+caseVO.getAbbrevation()+" No. /"+ registerRequestVO.getCaseYear()+" allotted to the FR No: "+"/"+ registerRequestVO.getFrYear()+" to this Branch Secretariat and to the concerned department/ Ministry to update our records and also for timely process of your Fee Bill.");
 					counselpara6Run.addCarriageReturn();
 					counselpara6Run.addCarriageReturn();
 					} else {
@@ -781,6 +809,41 @@ public class AddDAO {
 					counselpara9Run.setText("2. Copy to the Additional SG, Hon`ble High Court of Karnataka, Bangalore- For kind information.");
 					counselpara9Run.addCarriageReturn();
 					counselpara9Run.addCarriageReturn();
+				}
+				
+				} else {
+					
+					XWPFParagraph counselOnRecordDetails = document.createParagraph();
+					counselOnRecordDetails.setAlignment(ParagraphAlignment.BOTH);
+					counselOnRecordDetails.setSpacingAfterLines(0);
+					counselOnRecordDetails.setSpacingAfter(0);
+					
+					XWPFRun counselOnRecordNameRun = counselDetails.createRun();
+					counselOnRecordNameRun.setText("2. " +counselOnRecordResponseVO.getName());
+					counselOnRecordNameRun.setFontFamily("Calibri");counselOnRecordNameRun.setColor(fontColour); counselOnRecordNameRun.setFontSize(10);
+					counselOnRecordNameRun.addCarriageReturn();
+					
+					XWPFRun counselOnRecordDesignationRun = counselDetails.createRun();
+					counselOnRecordDesignationRun.setText(counselOnRecordResponseVO.getCounselType());
+					counselOnRecordDesignationRun.setFontFamily("Calibri");counselOnRecordDesignationRun.setColor(fontColour); counselOnRecordDesignationRun.setFontSize(10);
+					counselOnRecordDesignationRun.addCarriageReturn();
+					
+					XWPFRun counselOnRecordAddressRun = counselDetails.createRun();
+					counselOnRecordAddressRun.setText(counselOnRecordResponseVO.getAddress().trim()+"; Mobile: "+counselOnRecordResponseVO.getMobileNumber().trim()+"; Email: "+counselOnRecordResponseVO.getEmailID().trim()+(counselOnRecordResponseVO.getTelephoneNumber() != null ? "; Telephone:"+counselOnRecordResponseVO.getTelephoneNumber()+" - ": " - ") + (registerRequestVO.getCaseNumber().equalsIgnoreCase("0") ? "(i)" : "") + " He is requested to assist the Ld. Addl.SG as an advocate on record in the above-mentioned subject.");
+					counselOnRecordAddressRun.setFontFamily("Calibri");counselOnRecordAddressRun.setColor(fontColour); counselOnRecordAddressRun.setFontSize(10);
+					
+					
+					if(registerRequestVO.getCaseNumber().equalsIgnoreCase("0")) {
+						XWPFRun counselpara3Run = counselDetails.createRun();
+						counselpara3Run.setText("(ii). He is also requested to intimate the "+ caseVO.getAbbrevation().trim() +" No. /"+ registerRequestVO.getCaseYear()+" allotted to the FR No. "+ registerRequestVO.getFrNumber()+"/" + registerRequestVO.getFrYear()+" to this Branch Secretariat and to the concerned department/ Ministry to update our records and also for timely process of your Fee Bill. ");
+						counselpara3Run.setFontFamily("Calibri");counselpara3Run.setColor(fontColour); counselpara3Run.setFontSize(10);
+						counselpara3Run.addCarriageReturn();	
+						counselpara3Run.addCarriageReturn();
+						counselpara3Run.addCarriageReturn();
+					} else {
+						counselOnRecordAddressRun.addCarriageReturn();
+						counselOnRecordAddressRun.addCarriageReturn();
+					}
 				}
 				
 				XWPFParagraph signature1 = document.createParagraph();
