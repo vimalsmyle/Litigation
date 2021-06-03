@@ -299,13 +299,15 @@ CREATE TABLE `courtdetails` (
   `CourtName` varchar(1000) NOT NULL,
   `Location` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`CourtID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `courtdetails` */
 
 insert  into `courtdetails`(`CourtID`,`CourtName`,`Location`) values 
 (1,'High Court','Bangalore'),
-(2,'Central Administrative Tribunal','Bangalore');
+(2,'Central Administrative Tribunal','Bangalore'),
+(3,'National Company Law Tribunal','Bangalore'),
+(4,'KSCDRC','Bangalore');
 
 /*Table structure for table `departmentdetails` */
 
@@ -318,7 +320,7 @@ CREATE TABLE `departmentdetails` (
   `Address` varchar(5000) DEFAULT NULL,
   `TypeOfAddress` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`DepartmentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 
 /*Data for the table `departmentdetails` */
 
@@ -367,7 +369,7 @@ insert  into `departmentdetails`(`DepartmentID`,`DepartmentName`,`MinistryID`,`A
 (42,'legislative',28,NULL,NULL),
 (43,'Administrative Reforms and Public Grievances',35,NULL,NULL),
 (44,'Pension & Pensioner`s Welfare',35,NULL,NULL),
-(45,'Personnel AND Training',35,NULL,NULL),
+(45,'Personnel & Training',35,NULL,NULL),
 (46,'land Resources',40,NULL,NULL),
 (47,'Rural Development',40,NULL,NULL),
 (48,'Biotechnology',41,NULL,NULL),
@@ -377,10 +379,13 @@ insert  into `departmentdetails`(`DepartmentID`,`DepartmentName`,`MinistryID`,`A
 (52,'Social Justice AND Empowerment',44,NULL,NULL),
 (53,'Sports',51,NULL,NULL),
 (54,'Youth Affairs',51,NULL,NULL),
-(55,'Atomic Energy',54,NULL,NULL),
-(56,'SPACE',54,NULL,NULL),
+(55,'Atomic Energy',53,NULL,NULL),
+(56,'SPACE',53,NULL,NULL),
 (57,'Military Affairs',11,NULL,NULL),
-(58,'Family Welfare',20,NULL,NULL);
+(58,'Family Welfare',20,NULL,NULL),
+(59,'CPWD',23,NULL,NULL),
+(60,'Statistics',45,NULL,NULL),
+(61,'Programme Implementation',45,NULL,NULL);
 
 /*Table structure for table `employeedetails` */
 

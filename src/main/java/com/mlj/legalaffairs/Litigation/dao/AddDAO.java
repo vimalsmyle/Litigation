@@ -14,10 +14,16 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.util.Units;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.LineSpacingRule;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
@@ -304,9 +310,17 @@ public class AddDAO {
 				
 				XWPFRun noteSheetPara2Run = noteSheetPara2.createRun(); 
 				
-				CounselResponseVO counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
+				CounselResponseVO counselResponseVO = null; 
+
+				if(registerRequestVO.getCounselOnRecordID() != 0) {
+					counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
+					CounselResponseVO counselOnRecordResponseVO = fetchCounselDetails(registerRequestVO.getCounselOnRecordID());	
+					noteSheetPara2Run.setText("                As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle().trim()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() +" and " + counselOnRecordResponseVO.getTitle().trim()+". "+ counselOnRecordResponseVO.getName().trim()+ ", "+ counselOnRecordResponseVO.getCounselType().trim()+" is put up for signature please.");
+				} else {
+					counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
+					noteSheetPara2Run.setText("                As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle().trim()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() +" is put up for signature please.");
+				}
 				
-				noteSheetPara2Run.setText("                As directed in the FR, a fair nomination in favour of "+ counselResponseVO.getTitle().trim()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() +" is put up for signature please."); 
 				noteSheetPara2Run.setColor(fontColour);
 				noteSheetPara2Run.setFontFamily("Verdana");
 				noteSheetPara2Run.setFontSize(10);
@@ -781,6 +795,17 @@ public class AddDAO {
 				document.write(out);
 				out.close();
 				document.close();
+				
+				/*FileInputStream file = new FileInputStream(new File("D:\\Register\\High Court & CAT Nomination Register.xls"));
+
+		            XSSFWorkbook workbook = new XSSFWorkbook(file);
+		            // change every year
+		            XSSFSheet sheet = (registerRequestVO.getCourtType() == 1 ? workbook.getSheetAt(0) : workbook.getSheetAt(6));
+		            
+		            Cell cell = null;
+		            
+		            cell = sheet.getRow(sheet.getLastRowNum()).getCell(1);
+		            cell.setCellValue(registerRequestVO.getFileNumber());*/
 				
 				responsevo.setResult("Success");
 				responsevo.setMessage("Nomination Letter created Successfully"); 
