@@ -544,6 +544,14 @@ public class AddDAO {
 				subject2Run.setText(" filed by " +registerRequestVO.getFiledByTitle() + " "+registerRequestVO.getFiledBy() + " Vs " + registerRequestVO.getFiledAgainst() + " before the Hon’ble " + (registerRequestVO.getCourtType() == 1 ? "High Court of Karnataka" : "Central Administrative Tribunal") +", Bangalore.");
 				subject2Run.setFontFamily("Calibri"); subject2Run.setColor(fontColour); subject2Run.setFontSize(10);
 				subject2Run.addCarriageReturn();
+				subject2Run.addCarriageReturn();
+				
+				if(registerRequestVO.isReference()) {
+				XWPFRun referenceRun = subject.createRun();
+				referenceRun.setText("Ref: "+registerRequestVO.getReferenceFrom()+"'s "+registerRequestVO.getReferenceType()+" " + (registerRequestVO.getReferenceType().equalsIgnoreCase("email") ? "" : "No.") + registerRequestVO.getReferenceNumber() +" dated " + (dateformatter(registerRequestVO.getReferenceDate()) +"."));
+				referenceRun.setFontFamily("Calibri"); referenceRun.setColor(fontColour); referenceRun.setFontSize(10);
+				referenceRun.addCarriageReturn();
+				}
 				
 				XWPFParagraph sir = document.createParagraph();
 				sir.setAlignment(ParagraphAlignment.LEFT);
@@ -559,7 +567,17 @@ public class AddDAO {
 				para1.setSpacingAfterLines(0);
 				
 				XWPFRun para1Run = para1.createRun();
-				para1Run.setText("                A copy of the " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) + " received from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka, Bangalore is enclosed. Please note that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent " : "Hon`ble Central Administrative Tribunal, Bangalore is enclosed. Please note that " + counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent "));
+				
+				if(!registerRequestVO.isEnclosure()) {
+					if(registerRequestVO.getReferenceFrom().equalsIgnoreCase("Department") && registerRequestVO.getReferenceType().equalsIgnoreCase("letter")) {
+						para1Run.setText("                I am to refer to your letter cited above and to intimate that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent ");
+					} else {
+						para1Run.setText("                Please note that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent ");
+					}
+				} else {
+					para1Run.setText("                A copy of the " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) + " received from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka, Bangalore is enclosed. Please note that "+ counselResponseVO.getTitle()+ ". " +counselResponseVO.getName().trim()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent " : "Hon`ble Central Administrative Tribunal, Bangalore is enclosed. Please note that " + counselResponseVO.getTitle()+ ". " +counselResponseVO.getName()+", " + counselResponseVO.getCounselType() + " has been engaged in the above matter to represent "));	
+				}
+				
 				para1Run.setFontFamily("Calibri");para1Run.setColor(fontColour); para1Run.setFontSize(10);
 				
 				XWPFRun para11Run = para1.createRun();

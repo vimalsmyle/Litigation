@@ -11,28 +11,40 @@ public class RegisterRequestVO {
 	
 	private long highCourtID;
 	private long catID;
-	private int courtType;
-	private String fileNumber;
-	private int fileYear;
-	private String filedByTitle;
-	private String filedBy;
-	private String filedAgainst;
-	private int caseTypeID;
-	private String caseType;
-	private String caseNumber;
-	private int caseYear;
-	private String frNumber;
-	private int frYear;
-	private int numberOfCases;
-	private int ministryID;
-	private int departmentID;
-	private int counselID;
-	private int counselOnRecordID;
-	private int renominatedCounselID;
-	private String remarks;
-	private boolean old;
-	private String respondents;
-	private boolean enclosure;
+	private String caseType; 
+	private int courtType; // dropdown from backend
+	private String fileNumber; // textbox
+	private int fileYear; // dropdown
+	private String filedByTitle; // dropdown should send string to backend
+	private String filedBy; // textbox
+	private String filedAgainst; // textbox
+	private int caseTypeID; // dropdown from backend should send key to backend
+	private String caseNumber; // textbox
+	private int caseYear; // dropdown should send selected value to backend
+	
+	// should be disabled if courttype is other than 1
+	private String frNumber; // textbox
+	private int frYear; // dropdown should send selected value to backend
+	
+	
+	private int numberOfCases; // textbox should accept int only
+	private int ministryID; // dropdown from backend should send key to backend
+	private int departmentID;// dropdown from backend should send key to backend
+	private int counselID;// dropdown from backend should send key to backend
+	private int counselOnRecordID;// dropdown from backend should send key to backend; enable only when Ld.ASG is selected
+	private String remarks; // textbox
+	private boolean old; // checkbox
+	private String respondents; // textbox
+	private boolean enclosure; //checkbox 
+	private boolean reference; // checkbox
+	
+	// should be enabled only when reference checkbox is enabled
+	private String referenceDate; //only date picker (format yyyy-MM-dd)
+	private String referenceNumber; // textbox 
+	private String referenceFrom; // dropdown should send value selected
+	private String referenceType; // dropdown (letter or email)
+	
+	private int renominatedCounselID;// dropdown from backend should send key to backend (only for edit/update)
 	
 	public long getHighCourtID() {
 		return highCourtID;
@@ -177,6 +189,36 @@ public class RegisterRequestVO {
 	}
 	public void setRenominatedCounselID(int renominatedCounselID) {
 		this.renominatedCounselID = renominatedCounselID;
+	}
+	public boolean isReference() {
+		return reference;
+	}
+	public void setReference(boolean reference) {
+		this.reference = reference;
+	}
+	public String getReferenceNumber() {
+		return referenceNumber;
+	}
+	public void setReferenceNumber(String referenceNumber) {
+		this.referenceNumber = referenceNumber;
+	}
+	public String getReferenceFrom() {
+		return referenceFrom;
+	}
+	public void setReferenceFrom(String referenceFrom) {
+		this.referenceFrom = referenceFrom;
+	}
+	public String getReferenceDate() {
+		return referenceDate;
+	}
+	public void setReferenceDate(String referenceDate) {
+		this.referenceDate = referenceDate;
+	}
+	public String getReferenceType() {
+		return referenceType;
+	}
+	public void setReferenceType(String referenceType) {
+		this.referenceType = referenceType;
 	}
 	
 }
