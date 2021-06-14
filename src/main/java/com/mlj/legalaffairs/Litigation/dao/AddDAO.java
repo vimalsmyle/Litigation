@@ -186,7 +186,7 @@ public class AddDAO {
 //		String drivename = "D:/<folder>/Drafts/"+currentdate.getYear()+"/"+currentdate.getMonth()+"/";
 		String drivename = "D:/<folder>/Drafts/"+currentdate.getYear()+"/"+"<folder1>";
 		String fontColour = "000000";
-		String fileNumber = "File No: "+registerRequestVO.getFileNumber()+"/"+currentdate.getYear()+"/LIT/"+(registerRequestVO.getCourtType() == 1 ? "HC" : "CAT");
+		String fileNumber = "File No: "+registerRequestVO.getFileNumber()+"/"+currentdate.getYear()+"/LIT/"+(registerRequestVO.getCourtType() == 1 ? "HC" : registerRequestVO.getCourtType() == 2 ? "CAT" : registerRequestVO.getCourtType() == 3 ? "NCLT" : registerRequestVO.getCourtType() == 4 ? "KSCDRC" : "");
 
 		try {
 			con = getConnection();
@@ -228,8 +228,7 @@ public class AddDAO {
 				
 				if(!registerRequestVO.isOld()) {
 				// create Nomination letter in doc format
-				//change accordingly for additional sg
-				// change accordingly for letter requests also
+				//change accordingly to nclt and kscdrc
 				
 				CaseVO caseVO = new CaseVO();
 				if(registerRequestVO.getCaseTypeID() != 78) {caseVO = fetchCaseDetails(registerRequestVO.getCaseTypeID());}
@@ -686,7 +685,11 @@ public class AddDAO {
 				
 				XWPFParagraph signature = document.createParagraph();
 				signature.setAlignment(ParagraphAlignment.RIGHT);
-				signature.setSpacingAfter(0);
+				signature.setSpacingAfter(0); signature.setSpacingAfterLines(0);
+				
+				XWPFRun nameRun = signature.createRun();
+				nameRun.setText("B Nanda Kumar");
+				nameRun.setFontFamily("Calibri");nameRun.setColor(fontColour); nameRun.setFontSize(10);
 				
 				XWPFRun signatureRun = signature.createRun();
 				signatureRun.setText("Assistant Legal Adviser & In-Charge");
@@ -866,7 +869,11 @@ public class AddDAO {
 				
 				XWPFParagraph signature1 = document.createParagraph();
 				signature1.setAlignment(ParagraphAlignment.RIGHT);
-				signature1.setSpacingAfter(0);
+				signature1.setSpacingAfter(0);signature1.setSpacingAfterLines(0);
+				
+				XWPFRun name1Run = signature1.createRun();
+				name1Run.setText("B Nanda Kumar");
+				name1Run.setFontFamily("Calibri");name1Run.setColor(fontColour); name1Run.setFontSize(10);
 				
 				XWPFRun signature1Run = signature1.createRun();
 				signature1Run.setText("Assistant Legal Adviser & In-Charge");
