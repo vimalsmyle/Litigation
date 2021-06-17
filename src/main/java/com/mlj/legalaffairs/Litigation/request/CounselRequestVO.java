@@ -9,18 +9,18 @@ package com.mlj.legalaffairs.Litigation.request;
  */
 public class CounselRequestVO {
 	
-	private int counselID;
-	private String title;
-	private String name;
-	private int counselTypeID;
-	private String termFrom;
-	private String termUpto;
-	private String address;
-	private String mobileNumber;
-	private String emailID;
-	private String telephoneNumber;
-	private int courtID;
-	private String remarks;
+	private int counselID; 
+	private String title; // drop down, String should be sent; Shri, Smt, Ms
+	private String name; // text field
+	private int counselTypeID; // dropdown from backend
+	private String termFrom; // Only date picker
+	private String termUpto; // only date picker
+	private String address; // text box
+	private String mobileNumber; // text box
+	private String emailID; // text box
+	private String telephoneNumber; // text box
+	private int courtID; // dropdown from backend
+	private String remarks; // text box
 	
 	
 	public int getCounselID() {

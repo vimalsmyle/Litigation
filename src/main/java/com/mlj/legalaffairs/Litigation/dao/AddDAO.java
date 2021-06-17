@@ -34,10 +34,14 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import com.mlj.legalaffairs.Litigation.constants.DataBaseConstants;
 import com.mlj.legalaffairs.Litigation.constants.ExtraConstants;
 import com.mlj.legalaffairs.Litigation.request.CounselRequestVO;
+import com.mlj.legalaffairs.Litigation.request.DepartmentRequestVO;
+import com.mlj.legalaffairs.Litigation.request.MinistryRequestVO;
 import com.mlj.legalaffairs.Litigation.request.RegisterRequestVO;
 import com.mlj.legalaffairs.Litigation.response.ResponseVO;
 import com.mlj.legalaffairs.Litigation.response.CaseVO;
 import com.mlj.legalaffairs.Litigation.response.CounselResponseVO;
+import com.mlj.legalaffairs.Litigation.response.DepartmentResponseVO;
+import com.mlj.legalaffairs.Litigation.response.MinistryResponseVO;
 import com.mlj.legalaffairs.Litigation.response.RegisterResponseVO;
 
 /**
@@ -54,6 +58,240 @@ public class AddDAO {
 				DataBaseConstants.PASSWORD);
 		return connection;
 }
+	
+	public List<MinistryResponseVO> getMinistrydetails() throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<MinistryResponseVO> ministryList = null;
+		MinistryResponseVO ministryResponseVO = null;
+		try {
+			con = getConnection();
+			
+			ministryList = new LinkedList<MinistryResponseVO>();
+			
+			pstmt = con.prepareStatement("SELECT * FROM ministrydetails ORDER BY MinistryName ASC");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ministryResponseVO = new MinistryResponseVO();
+				
+				ministryResponseVO.setMinistryID(rs.getInt("MinsitryID"));
+				ministryResponseVO.setMinistryName(rs.getString("MinistryName"));
+				ministryResponseVO.setAddress(rs.getString("Address"));
+				ministryResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress"));
+				ministryResponseVO.setDate(rs.getString("RegisteredDate"));
+				
+				ministryList.add(ministryResponseVO);
+			}
+			
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			pstmt.close();
+			rs.close();
+			con.close();
+		}
+		
+		return ministryList;
+	}
+	
+	public ResponseVO addMinistry(MinistryRequestVO ministryRequestVO) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("INSERT INTO ministrydetails (MinistryName, Address, TypeOfAddress, RegisteredDate) VALUES (?, ?, ?, NOW())");
+			pstmt.setString(1, ministryRequestVO.getMinistryName());
+			pstmt.setString(2, ministryRequestVO.getAddress());
+			pstmt.setString(3, ministryRequestVO.getTypeOfAddress());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Ministry Added Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
+	
+	public ResponseVO editMinistry(MinistryRequestVO ministryRequestVO) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("UPDATE ministrydetails SET MinistryName = ?, Address = ?, TypeOfAddress = ?, ModifiedDate = NOW() WHERE MinistryID = ?");
+			pstmt.setString(1, ministryRequestVO.getMinistryName());
+			pstmt.setString(2, ministryRequestVO.getAddress());
+			pstmt.setString(3, ministryRequestVO.getTypeOfAddress());
+			pstmt.setInt(4, ministryRequestVO.getMinistryID());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Ministry Details Updated Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+		
+	}
+	
+	public List<DepartmentResponseVO> getDepartmentdetails() throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<DepartmentResponseVO> departmentList = null;
+		DepartmentResponseVO departmentResponseVO = null;
+		try {
+			con = getConnection();
+			
+			departmentList = new LinkedList<DepartmentResponseVO>();
+			
+			pstmt = con.prepareStatement("SELECT dd.DepartmentID, dd.DepartmentName, md.MinistryName, dd.Address, dd.TypeOfAddress, dd.RegisteredDate FROM departmentdetails AS dd LEFT JOIN ministrydetails AS md ON dd.MinistryID = md.MinistryID ORDER BY dd.DepartmentName ASC");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				departmentResponseVO = new DepartmentResponseVO();
+				
+				departmentResponseVO.setDepartmentID(rs.getInt("DepartmentID"));
+				departmentResponseVO.setDepartmentName(rs.getString("DepartmentName"));
+				departmentResponseVO.setMinistryName(rs.getString("MinistryName"));
+				departmentResponseVO.setAddress(rs.getString("Address"));
+				departmentResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress"));
+				departmentResponseVO.setDate(rs.getString("RegisteredDate"));
+				
+				departmentList.add(departmentResponseVO);
+			}
+			
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			pstmt.close();
+			rs.close();
+			con.close();
+		}
+		
+		return departmentList;
+	}
+	
+	public ResponseVO addDepartment(DepartmentRequestVO departmentRequestVO) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("INSERT INTO departmentdetails (DepartmentName, MinistryID, Address, TypeOfAddress, RegisteredDate) VALUES (?, ?, ?, ?, NOW())");
+			pstmt.setString(1, departmentRequestVO.getDepartmentName());
+			pstmt.setInt(2, departmentRequestVO.getMinistryID());
+			pstmt.setString(3, departmentRequestVO.getAddress());
+			pstmt.setString(4, departmentRequestVO.getTypeOfAddress());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Department Added Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
+	
+	public ResponseVO editDepartment(DepartmentRequestVO departmentRequestVO) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("UPDATE departmentdetails SET DepartmentName = ?, MinistryID = ?, Address = ?, TypeOfAddress = ?, ModifiedDate = NOW() WHERE DepartmentID = ?");
+			pstmt.setString(1, departmentRequestVO.getDepartmentName());
+			pstmt.setInt(2, departmentRequestVO.getMinistryID());
+			pstmt.setString(3, departmentRequestVO.getAddress());
+			pstmt.setString(4, departmentRequestVO.getTypeOfAddress());
+			pstmt.setInt(5, departmentRequestVO.getDepartmentID());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Department Details Updated Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
 
 	public List<CounselResponseVO> getCounseldetails() throws SQLException {
 		// TODO Auto-generated method stub
@@ -99,6 +337,97 @@ public class AddDAO {
 		return counselList;
 	}
 
+	public ResponseVO addCounsel(CounselRequestVO counselvo) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("INSERT INTO counseldetails (Title, Name, CounselTypeID, TermFrom, TermUpto, Address, MobileNumber, EmailID, TelephoneNumber, CourtID, Remarks, RegisteredDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+			pstmt.setString(1, counselvo.getTitle());
+			pstmt.setString(2, counselvo.getName());
+			pstmt.setInt(3, counselvo.getCounselTypeID());
+			pstmt.setString(4, counselvo.getTermFrom());
+			pstmt.setString(5, counselvo.getTermUpto());
+			pstmt.setString(6, counselvo.getAddress());
+			pstmt.setString(7, counselvo.getMobileNumber());
+			pstmt.setString(8, counselvo.getEmailID());
+			pstmt.setString(9, counselvo.getTelephoneNumber());
+			pstmt.setInt(10, counselvo.getCourtID());
+			pstmt.setString(11, counselvo.getRemarks());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Counsel Added Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
+
+	public ResponseVO editCounsel(CounselRequestVO counselvo) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResponseVO responsevo = new ResponseVO();
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement("UPDATE counseldetails SET Title = ?, Name = ?, CounselTypeID = ?, TermFrom = ?, TermUpto = ?, Address = ?, MobileNumber = ?, EmailID = ?, TelephoneNumber = ?, CourtID = ?, Remarks = ?, ModifiedDate = NOW() WHERE CounselID = ?");
+			pstmt.setString(1, counselvo.getTitle());
+			pstmt.setString(2, counselvo.getName());
+			pstmt.setInt(3, counselvo.getCounselTypeID());
+			pstmt.setString(4, counselvo.getTermFrom());
+			pstmt.setString(5, counselvo.getTermUpto());
+			pstmt.setString(6, counselvo.getAddress());
+			pstmt.setString(7, counselvo.getMobileNumber());
+			pstmt.setString(8, counselvo.getEmailID());
+			pstmt.setString(9, counselvo.getTelephoneNumber());
+			pstmt.setInt(10, counselvo.getCourtID());
+			pstmt.setString(11, counselvo.getRemarks());
+			pstmt.setInt(12, counselvo.getCounselID());
+			
+			if (pstmt.executeUpdate() > 0) {
+				responsevo.setMessage("Counsel Details Updated Successfully");
+				responsevo.setResult("Success");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			responsevo.setMessage("INTERNAL SERVER ERROR");
+			responsevo.setResult("Failure");
+			e.printStackTrace();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responsevo.setMessage("SERVER ERROR");
+			responsevo.setResult("Failure");
+		} finally {
+			pstmt.close();
+			con.close();
+		}
+		return responsevo;
+	}
+	
 	public List<RegisterResponseVO> getNominationdetails(int courtType, int year) throws SQLException {
 		// TODO Auto-generated method stub
 		
@@ -979,97 +1308,6 @@ public class AddDAO {
 		return responsevo;
 	}
 	
-	public ResponseVO addCounsel(CounselRequestVO counselvo) throws SQLException {
-		// TODO Auto-generated method stub
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResponseVO responsevo = new ResponseVO();
-
-		try {
-			con = getConnection();
-			pstmt = con.prepareStatement("INSERT INTO counseldetails (Title, Name, CounselTypeID, TermFrom, TermUpto, Address, MobileNumber, EmailID, TelephoneNumber, CourtID, Remarks, RegisteredDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-			pstmt.setString(1, counselvo.getTitle());
-			pstmt.setString(2, counselvo.getName());
-			pstmt.setInt(3, counselvo.getCounselTypeID());
-			pstmt.setString(4, counselvo.getTermFrom());
-			pstmt.setString(5, counselvo.getTermUpto());
-			pstmt.setString(6, counselvo.getAddress());
-			pstmt.setString(7, counselvo.getMobileNumber());
-			pstmt.setString(8, counselvo.getEmailID());
-			pstmt.setString(9, counselvo.getTelephoneNumber());
-			pstmt.setInt(10, counselvo.getCourtID());
-			pstmt.setString(11, counselvo.getRemarks());
-			
-			if (pstmt.executeUpdate() > 0) {
-				responsevo.setMessage("Counsel Added Successfully");
-				responsevo.setResult("Success");
-			}
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			responsevo.setMessage("INTERNAL SERVER ERROR");
-			responsevo.setResult("Failure");
-			e.printStackTrace();
-			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			responsevo.setMessage("SERVER ERROR");
-			responsevo.setResult("Failure");
-		} finally {
-			pstmt.close();
-			con.close();
-		}
-		return responsevo;
-	}
-
-	public ResponseVO editCounsel(CounselRequestVO counselvo) throws SQLException {
-		// TODO Auto-generated method stub
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResponseVO responsevo = new ResponseVO();
-
-		try {
-			con = getConnection();
-			pstmt = con.prepareStatement("UPDATE counseldetails SET Title = ?, Name = ?, CounselTypeID = ?, TermFrom = ?, TermUpto = ?, Address = ?, MobileNumber = ?, EmailID = ?, TelephoneNumber = ?, CourtID = ?, Remarks = ?, ModifiedDate = NOW() WHERE CounselID = ?");
-			pstmt.setString(1, counselvo.getTitle());
-			pstmt.setString(2, counselvo.getName());
-			pstmt.setInt(3, counselvo.getCounselTypeID());
-			pstmt.setString(4, counselvo.getTermFrom());
-			pstmt.setString(5, counselvo.getTermUpto());
-			pstmt.setString(6, counselvo.getAddress());
-			pstmt.setString(7, counselvo.getMobileNumber());
-			pstmt.setString(8, counselvo.getEmailID());
-			pstmt.setString(9, counselvo.getTelephoneNumber());
-			pstmt.setInt(10, counselvo.getCourtID());
-			pstmt.setString(11, counselvo.getRemarks());
-			pstmt.setInt(12, counselvo.getCounselID());
-			
-			if (pstmt.executeUpdate() > 0) {
-				responsevo.setMessage("Counsel Details Updated Successfully");
-				responsevo.setResult("Success");
-			}
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			responsevo.setMessage("INTERNAL SERVER ERROR");
-			responsevo.setResult("Failure");
-			e.printStackTrace();
-			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			responsevo.setMessage("SERVER ERROR");
-			responsevo.setResult("Failure");
-		} finally {
-			pstmt.close();
-			con.close();
-		}
-		return responsevo;
-	}
-	
 	public static String dateformatter(String date) throws ParseException {
 		
 		SimpleDateFormat DBformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1142,4 +1380,6 @@ public class AddDAO {
 		return caseVO;
 		
 	}
+
+
 }
