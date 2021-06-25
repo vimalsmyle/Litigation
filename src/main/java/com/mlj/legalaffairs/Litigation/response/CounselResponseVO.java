@@ -22,7 +22,7 @@ public class CounselResponseVO {
 	private String mobileNumber;
 	private String emailID;
 	private String telephoneNumber;
-	private String courtType;
+	private String courtName;
 	private String remarks;
 	
 	private List<CounselResponseVO> data;
@@ -131,12 +131,12 @@ public class CounselResponseVO {
 		this.abbrevation = abbrevation;
 	}
 
-	public String getCourtType() {
-		return courtType;
+	public String getCourtName() {
+		return courtName;
 	}
 
-	public void setCourtType(String courtType) {
-		this.courtType = courtType;
+	public void setCourtName(String courtName) {
+		this.courtName = courtName;
 	}
 
 }

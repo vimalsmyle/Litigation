@@ -12,7 +12,7 @@ import java.util.List;
 public class DepartmentResponseVO {
 	
 	private int departmentID;
-	private String DepartmentName;
+	private String departmentName;
 	private String ministryName;
 	private String address;
 	private String typeOfAddress;
@@ -27,10 +27,10 @@ public class DepartmentResponseVO {
 		this.departmentID = departmentID;
 	}
 	public String getDepartmentName() {
-		return DepartmentName;
+		return departmentName;
 	}
 	public void setDepartmentName(String departmentName) {
-		DepartmentName = departmentName;
+		this.departmentName = departmentName;
 	}
 	public String getAddress() {
 		return address;

@@ -157,7 +157,7 @@ CREATE TABLE `counseldetails` (
   `RegisteredDate` datetime DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`CounselID`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=latin1;
 
 /*Data for the table `counseldetails` */
 
@@ -268,7 +268,8 @@ insert  into `counseldetails`(`CounselID`,`Title`,`Name`,`CounselTypeID`,`TermFr
 (104,'Shri','S Sugumaran\r\n',5,'2018-03-20','2021-03-19','Chaitanya Aprtments, # 40, Govindappa Road, Basavangudi, Bangalore - 560004\r\n','9845292802\r\n','sugumaran.adv@qmail.com\r\n','080-26622345',2,1,NULL,'2021-06-02 16:53:10',NULL),
 (105,'Shri','Keshavmurthy H B\r\n',5,'2018-03-20','2021-03-19','# 555, Ground Floor, 53rd Cross, 3rd Block, Rajajinagar, Bangalore - 560010\r\n','9945564829\r\n',NULL,NULL,2,1,NULL,'2021-06-02 16:53:10',NULL),
 (106,'Shri','Vijayakumaraswamy B G\r\n',5,'2018-03-20','2021-03-19','# 27, Park Road, Akkipete, Bangalore - 560053\r\n','9480464829\r\n',NULL,NULL,2,1,NULL,'2021-06-02 16:53:10',NULL),
-(107,'Shri','K Dilip Kumar\r\n',5,'2018-03-20','2021-03-19','# 64/1, 2nd Floor, Lakshmi Complex, 1st Main, Shesharipuram\r\n',NULL,NULL,NULL,2,1,NULL,'2021-06-02 16:53:10',NULL);
+(107,'Shri','K Dilip Kumar\r\n',5,'2018-03-20','2021-03-19','# 64/1, 2nd Floor, Lakshmi Complex, 1st Main, Shesharipuram\r\n',NULL,NULL,NULL,2,1,NULL,'2021-06-02 16:53:10',NULL),
+(108,'Ms','Manasi Kumar',2,'2021-06-14','2024-06-13','E-403, Sterling Terraces Apartments, 100 Ft. Ring Road, BSK 3rd Stage, Bangalore - 560 085','9986394523','manasi.kumar@arkalaw.in','',1,1,'','2021-06-25 16:17:22',NULL);
 
 /*Table structure for table `counseltype` */
 

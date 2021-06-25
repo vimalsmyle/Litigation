@@ -78,7 +78,7 @@ public class AddDAO {
 			while(rs.next()) {
 				ministryResponseVO = new MinistryResponseVO();
 				
-				ministryResponseVO.setMinistryID(rs.getInt("MinsitryID"));
+				ministryResponseVO.setMinistryID(rs.getInt("MinistryID"));
 				ministryResponseVO.setMinistryName(rs.getString("MinistryName"));
 				ministryResponseVO.setAddress(rs.getString("Address"));
 				ministryResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress"));
@@ -306,7 +306,7 @@ public class AddDAO {
 			
 			counselList = new LinkedList<CounselResponseVO>();
 			
-			pstmt = con.prepareStatement("SELECT cd.CounselID, cd.Title, cd.Name, ct.CounselType, cd.Address, cd.MobileNumber, cd.EmailID, cd.TelephoneNumber, ctd.CourtType FROM counseldetails AS cd LEFT JOIN counselType AS ct ON cd.CounselTypeID = ct.CounselTypeID LEFT JOIN courtdetails AS ctd ON ctd.CourtID = cd.CourtID WHERE cd.Status = 1 ORDER BY Name ASC");
+			pstmt = con.prepareStatement("SELECT cd.CounselID, cd.Title, cd.Name, ct.CounselType, cd.Address, cd.MobileNumber, cd.EmailID, cd.TelephoneNumber, ctd.CourtName FROM counseldetails AS cd LEFT JOIN counselType AS ct ON cd.CounselTypeID = ct.CounselTypeID LEFT JOIN courtdetails AS ctd ON ctd.CourtID = cd.CourtID WHERE cd.Status = 1 ORDER BY Name ASC");
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -320,7 +320,7 @@ public class AddDAO {
 				counselResponseVO.setMobileNumber(rs.getString("MobileNumber"));
 				counselResponseVO.setEmailID(rs.getString("EmailID"));
 				counselResponseVO.setTelephoneNumber(rs.getString("TelephoneNumber"));
-				counselResponseVO.setCourtType(rs.getString("CourtType"));
+				counselResponseVO.setCourtName(rs.getString("CourtName"));
 				
 				counselList.add(counselResponseVO);
 			}
