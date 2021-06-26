@@ -15,16 +15,16 @@ public class RegisterRequestVO {
 	private int courtType; // dropdown from backend
 	private String fileNumber; // textbox
 	private int fileYear; // dropdown
-	private String filedByTitle; // dropdown should send string to backend
+	private String filedByTitle; // dropdown should send string to backend (Dr or Ms or M/s or Shri or Smt)
 	private String filedBy; // textbox
 	private String filedAgainst; // textbox
 	private int caseTypeID; // dropdown from backend should send key to backend
 	private String caseNumber; // textbox
-	private int caseYear; // dropdown should send selected value to backend
+	private int caseYear; // dropdown should send selected value to backend (current year and below upto 20 years i.e 2021 to 2000)
 	
 	// should be disabled if courttype is other than 1
 	private String frNumber; // textbox
-	private int frYear; // dropdown should send selected value to backend
+	private int frYear; // dropdown should send selected value to backend (current year and below upto 20 years i.e 2021 to 2019)
 	
 	
 	private int numberOfCases; // textbox should accept int only
@@ -41,7 +41,7 @@ public class RegisterRequestVO {
 	// should be enabled only when reference checkbox is enabled
 	private String referenceDate; //only date picker (format yyyy-MM-dd)
 	private String referenceNumber; // textbox 
-	private String referenceFrom; // dropdown should send value selected
+	private String referenceFrom; // dropdown should send value selected (Department or other)
 	private String referenceType; // dropdown (letter or email)
 	
 	private int renominatedCounselID;// dropdown from backend should send key to backend (only for edit/update)

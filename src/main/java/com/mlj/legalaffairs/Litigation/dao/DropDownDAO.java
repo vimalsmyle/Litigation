@@ -58,8 +58,7 @@ public class DropDownDAO {
 
 		try {
 			con = getConnection();
-			PreparedStatement pstmt = con.prepareStatement("SELECT CaseID, CaseName FROM caseType WHERE CourtTypeID= ?");
-			pstmt.setInt(1, courtID);
+			PreparedStatement pstmt = con.prepareStatement("SELECT CaseID, CaseName FROM caseType WHERE CourtTypeID= "+courtID);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				cases.put(rs.getInt("CaseID"), rs.getString("CaseName"));
@@ -71,25 +70,66 @@ public class DropDownDAO {
 		return cases;
 	}
 
-	public HashMap<String, String> getallhouses(int blockID, int roleid, String id) {
+	public HashMap<Integer, String> getAllMinistries() {
 		// TODO Auto-generated method stub
-		HashMap<String, String> houses = new HashMap<String, String>();
-		
+
+		HashMap<Integer, String> ministries = new HashMap<Integer, String>(); 
 		Connection con = null;
 		try {
 			con = getConnection();
-			String query = "SELECT CustomerUniqueID, HouseNumber from customerdetails WHERE BlockID = ? <change>";
-			PreparedStatement pstmt = con.prepareStatement(query.replaceAll("<change>", (roleid == 1 || roleid == 2 || roleid == 4 || roleid == 5) ? "ORDER BY CustomerID ASC" : (roleid == 3) ? " AND CustomerUniqueID = '"+id+"'" :""));
-			pstmt.setInt(1, blockID);
+			
+			PreparedStatement pstmt = con.prepareStatement("SELECT MinistryID, MinistryName FROM ministrydetails");
+			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				houses.put(rs.getString("CustomerUniqueID"), rs.getString("HouseNumber"));
+				ministries.put(rs.getInt("MinistryID"), rs.getString("MinistryName"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ministries;
+		
+	}
+
+	public HashMap<Integer, String> getAllDepartments(int ministryID) {
+		// TODO Auto-generated method stub
+
+		HashMap<Integer, String> departments = new HashMap<Integer, String>(); 
+		Connection con = null;
+
+		try {
+			con = getConnection();
+			PreparedStatement pstmt = con.prepareStatement("SELECT DepartmentID, DepartmentName FROM departmentdetails WHERE MinistryID= "+ministryID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				departments.put(rs.getInt("DepartmentID"), rs.getString("DepartmentName"));
 			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 		}
-		return houses;
+		return departments;
+		
+	}
+	
+	public HashMap<Integer, String> getAllCounsels(int courtID) {
+		// TODO Auto-generated method stub
+
+		HashMap<Integer, String> counsels = new HashMap<Integer, String>(); 
+		Connection con = null;
+
+		try {
+			con = getConnection();
+			PreparedStatement pstmt = con.prepareStatement("SELECT CounselID, Name FROM counseldetails WHERE CourtID= "+courtID+" ORDER BY Name ASC");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				counsels.put(rs.getInt("CounselID"), rs.getString("Name"));
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		}
+		return counsels;
 	}
 	
 }

@@ -17,6 +17,9 @@ public class ResponseVO {
 	private List<CounselResponseVO> counseldetails;
 	private HashMap<Integer, String> dropDownCourts;
 	private HashMap<Integer, String> dropDownCases;
+	private HashMap<Integer, String> dropDownMinistries;
+	private HashMap<Integer, String> dropDownDepartments;
+	private HashMap<Integer, String> dropDownCounsels;
 	private UserDetails userDetails;
 	
 	public String getResult() {
@@ -54,6 +57,24 @@ public class ResponseVO {
 	}
 	public void setDropDownCases(HashMap<Integer, String> dropDownCases) {
 		this.dropDownCases = dropDownCases;
+	}
+	public HashMap<Integer, String> getDropDownMinistries() {
+		return dropDownMinistries;
+	}
+	public void setDropDownMinistries(HashMap<Integer, String> dropDownMinistries) {
+		this.dropDownMinistries = dropDownMinistries;
+	}
+	public HashMap<Integer, String> getDropDownDepartments() {
+		return dropDownDepartments;
+	}
+	public void setDropDownDepartments(HashMap<Integer, String> dropDownDepartments) {
+		this.dropDownDepartments = dropDownDepartments;
+	}
+	public HashMap<Integer, String> getDropDownCounsels() {
+		return dropDownCounsels;
+	}
+	public void setDropDownCounsels(HashMap<Integer, String> dropDownCounsels) {
+		this.dropDownCounsels = dropDownCounsels;
 	}
 	
 }

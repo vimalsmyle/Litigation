@@ -1260,9 +1260,10 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			String query = "INSERT INTO <register> (CaseNumber, CaseYear, <change1> CounselID, ModifiedDate, RenominatedCounselID, RenominatedDate, Remarks) VALUES (?, ?, <change2> ?, NOW(), ?, NOW(), ?)";
+			
+			query = query.replaceAll("<register>", registerRequestVO.getCourtType() == 1 ? "highcourtregister" : "cattregister"); 
 			query = query.replaceAll("<change1>", registerRequestVO.getCourtType() == 1 ? "FRNumber, FRYear," : "");
 			query = query.replaceAll("<change2>", registerRequestVO.getCourtType() == 1 ? "?, ?," : "");
-			query = query.replaceAll("<register>", registerRequestVO.getCourtType() == 1 ? "highcourtregister" : "cattregister"); 
 			
 			pstmt = con.prepareStatement(query);
 			

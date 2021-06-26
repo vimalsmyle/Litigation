@@ -23,7 +23,7 @@ public class DropDownController {
 	
 	@RequestMapping(value = "/courts",method = RequestMethod.GET, 
 			produces="application/json")
-	public @ResponseBody ResponseVO getallcommunities() {
+	public @ResponseBody ResponseVO getAllCourts() {
 		
 		ResponseVO responsevo = new ResponseVO();
 		responsevo.setDropDownCourts(dropdowndao.getallcourts());
@@ -33,10 +33,40 @@ public class DropDownController {
 	
 	@RequestMapping(value = "/cases/{courtID}",method = RequestMethod.GET, 
 			produces="application/json")
-	public @ResponseBody ResponseVO getallblocks(@PathVariable("courtID") int courtid) {
+	public @ResponseBody ResponseVO getAllCases(@PathVariable("courtID") int courtid) {
 		
 		ResponseVO responsevo = new ResponseVO();
 		responsevo.setDropDownCases(dropdowndao.getallcases(courtid));
+		
+		return responsevo;
+	}
+	
+	@RequestMapping(value = "/ministries",method = RequestMethod.GET, 
+			produces="application/json")
+	public @ResponseBody ResponseVO getAllMinistries() {
+		
+		ResponseVO responsevo = new ResponseVO();
+		responsevo.setDropDownMinistries(dropdowndao.getAllMinistries());
+		
+		return responsevo;
+	}
+	
+	@RequestMapping(value = "/departments/{ministryID}",method = RequestMethod.GET, 
+			produces="application/json")
+	public @ResponseBody ResponseVO getAllDepartments(@PathVariable("ministryID") int ministryID) {
+		
+		ResponseVO responsevo = new ResponseVO();
+		responsevo.setDropDownDepartments(dropdowndao.getAllDepartments(ministryID));
+		
+		return responsevo;
+	}
+	
+	@RequestMapping(value = "/counsels/{courtID}",method = RequestMethod.GET, 
+			produces="application/json")
+	public @ResponseBody ResponseVO getAllCounsels(@PathVariable("courtID") int courtid) {
+		
+		ResponseVO responsevo = new ResponseVO();
+		responsevo.setDropDownCounsels(dropdowndao.getAllCounsels(courtid));
 		
 		return responsevo;
 	}
