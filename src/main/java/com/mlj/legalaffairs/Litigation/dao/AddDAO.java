@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -109,9 +110,9 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement("INSERT INTO ministrydetails (MinistryName, Address, TypeOfAddress, RegisteredDate) VALUES (?, ?, ?, NOW())");
-			pstmt.setString(1, ministryRequestVO.getMinistryName());
-			pstmt.setString(2, ministryRequestVO.getAddress());
-			pstmt.setString(3, ministryRequestVO.getTypeOfAddress());
+			pstmt.setString(1, ministryRequestVO.getMinistryName().trim());
+			pstmt.setString(2, ministryRequestVO.getAddress().trim());
+			pstmt.setString(3, ministryRequestVO.getTypeOfAddress().trim());
 			
 			if (pstmt.executeUpdate() > 0) {
 				responsevo.setMessage("Ministry Added Successfully");
@@ -146,9 +147,9 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement("UPDATE ministrydetails SET MinistryName = ?, Address = ?, TypeOfAddress = ?, ModifiedDate = NOW() WHERE MinistryID = ?");
-			pstmt.setString(1, ministryRequestVO.getMinistryName());
-			pstmt.setString(2, ministryRequestVO.getAddress());
-			pstmt.setString(3, ministryRequestVO.getTypeOfAddress());
+			pstmt.setString(1, ministryRequestVO.getMinistryName().trim());
+			pstmt.setString(2, ministryRequestVO.getAddress().trim());
+			pstmt.setString(3, ministryRequestVO.getTypeOfAddress().trim());
 			pstmt.setInt(4, ministryRequestVO.getMinistryID());
 			
 			if (pstmt.executeUpdate() > 0) {
@@ -226,10 +227,10 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement("INSERT INTO departmentdetails (DepartmentName, MinistryID, Address, TypeOfAddress, RegisteredDate) VALUES (?, ?, ?, ?, NOW())");
-			pstmt.setString(1, departmentRequestVO.getDepartmentName());
+			pstmt.setString(1, departmentRequestVO.getDepartmentName().trim());
 			pstmt.setInt(2, departmentRequestVO.getMinistryID());
-			pstmt.setString(3, departmentRequestVO.getAddress());
-			pstmt.setString(4, departmentRequestVO.getTypeOfAddress());
+			pstmt.setString(3, departmentRequestVO.getAddress().trim());
+			pstmt.setString(4, departmentRequestVO.getTypeOfAddress().trim());
 			
 			if (pstmt.executeUpdate() > 0) {
 				responsevo.setMessage("Department Added Successfully");
@@ -264,10 +265,10 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement("UPDATE departmentdetails SET DepartmentName = ?, MinistryID = ?, Address = ?, TypeOfAddress = ?, ModifiedDate = NOW() WHERE DepartmentID = ?");
-			pstmt.setString(1, departmentRequestVO.getDepartmentName());
+			pstmt.setString(1, departmentRequestVO.getDepartmentName().trim());
 			pstmt.setInt(2, departmentRequestVO.getMinistryID());
-			pstmt.setString(3, departmentRequestVO.getAddress());
-			pstmt.setString(4, departmentRequestVO.getTypeOfAddress());
+			pstmt.setString(3, departmentRequestVO.getAddress().trim());
+			pstmt.setString(4, departmentRequestVO.getTypeOfAddress().trim());
 			pstmt.setInt(5, departmentRequestVO.getDepartmentID());
 			
 			if (pstmt.executeUpdate() > 0) {
@@ -347,17 +348,17 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement("INSERT INTO counseldetails (Title, Name, CounselTypeID, TermFrom, TermUpto, Address, MobileNumber, EmailID, TelephoneNumber, CourtID, Remarks, RegisteredDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-			pstmt.setString(1, counselvo.getTitle());
-			pstmt.setString(2, counselvo.getName());
+			pstmt.setString(1, counselvo.getTitle().trim());
+			pstmt.setString(2, counselvo.getName().trim());
 			pstmt.setInt(3, counselvo.getCounselTypeID());
-			pstmt.setString(4, counselvo.getTermFrom());
-			pstmt.setString(5, counselvo.getTermUpto());
-			pstmt.setString(6, counselvo.getAddress());
-			pstmt.setString(7, counselvo.getMobileNumber());
-			pstmt.setString(8, counselvo.getEmailID());
-			pstmt.setString(9, counselvo.getTelephoneNumber());
+			pstmt.setString(4, counselvo.getTermFrom().trim());
+			pstmt.setString(5, counselvo.getTermUpto().trim());
+			pstmt.setString(6, counselvo.getAddress().trim());
+			pstmt.setString(7, counselvo.getMobileNumber().trim());
+			pstmt.setString(8, counselvo.getEmailID().trim());
+			pstmt.setString(9, counselvo.getTelephoneNumber().trim());
 			pstmt.setInt(10, counselvo.getCourtID());
-			pstmt.setString(11, counselvo.getRemarks());
+			pstmt.setString(11, counselvo.getRemarks().trim());
 			
 			if (pstmt.executeUpdate() > 0) {
 				responsevo.setMessage("Counsel Added Successfully");
@@ -392,17 +393,17 @@ public class AddDAO {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement("UPDATE counseldetails SET Title = ?, Name = ?, CounselTypeID = ?, TermFrom = ?, TermUpto = ?, Address = ?, MobileNumber = ?, EmailID = ?, TelephoneNumber = ?, CourtID = ?, Remarks = ?, ModifiedDate = NOW() WHERE CounselID = ?");
-			pstmt.setString(1, counselvo.getTitle());
-			pstmt.setString(2, counselvo.getName());
+			pstmt.setString(1, counselvo.getTitle().trim());
+			pstmt.setString(2, counselvo.getName().trim());
 			pstmt.setInt(3, counselvo.getCounselTypeID());
-			pstmt.setString(4, counselvo.getTermFrom());
-			pstmt.setString(5, counselvo.getTermUpto());
-			pstmt.setString(6, counselvo.getAddress());
-			pstmt.setString(7, counselvo.getMobileNumber());
-			pstmt.setString(8, counselvo.getEmailID());
-			pstmt.setString(9, counselvo.getTelephoneNumber());
+			pstmt.setString(4, counselvo.getTermFrom().trim());
+			pstmt.setString(5, counselvo.getTermUpto().trim());
+			pstmt.setString(6, counselvo.getAddress().trim());
+			pstmt.setString(7, counselvo.getMobileNumber().trim());
+			pstmt.setString(8, counselvo.getEmailID().trim());
+			pstmt.setString(9, counselvo.getTelephoneNumber().trim());
 			pstmt.setInt(10, counselvo.getCourtID());
-			pstmt.setString(11, counselvo.getRemarks());
+			pstmt.setString(11, counselvo.getRemarks().trim());
 			pstmt.setInt(12, counselvo.getCounselID());
 			
 			if (pstmt.executeUpdate() > 0) {
@@ -524,16 +525,16 @@ public class AddDAO {
 			query = query.replaceAll("<change2>", registerRequestVO.getCourtType() == 1 ? "?, ?," : "");
 			query = query.replaceAll("<register>", registerRequestVO.getCourtType() == 1 ? "highcourtregister" : "cattregister"); 
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, registerRequestVO.getFileNumber());
+			pstmt.setString(1, registerRequestVO.getFileNumber().trim());
 			pstmt.setInt(2, registerRequestVO.getFileYear());
-			pstmt.setString(3, registerRequestVO.getFiledBy());
+			pstmt.setString(3, registerRequestVO.getFiledBy().trim());
 			pstmt.setInt(4, registerRequestVO.getCaseTypeID());
-			pstmt.setString(5, registerRequestVO.getCaseNumber());
+			pstmt.setString(5, registerRequestVO.getCaseNumber().trim());
 			pstmt.setInt(6, registerRequestVO.getCaseYear());
 			
 			if(registerRequestVO.getCourtType() == 1) {
 			
-				pstmt.setString(7, registerRequestVO.getFrNumber());
+				pstmt.setString(7, registerRequestVO.getFrNumber().trim());
 				pstmt.setInt(8, registerRequestVO.getFrYear());
 				pstmt.setInt(9, registerRequestVO.getNumberOfCases());
 				pstmt.setInt(10, registerRequestVO.getMinistryID());
@@ -628,7 +629,12 @@ public class AddDAO {
 				
 				XWPFRun noteSheetPara1Run = noteSheetPara1.createRun();
 				// modify for nomination through dept letters and other sources
-				noteSheetPara1Run.setText("                We have received a copy of " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) +" from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka for nomination of Central Government Counsel." : "Hon`ble Central Administrative Tribunal, Bangalore for nomination of Central Government Counsel.") ); 
+				if(registerRequestVO.isReference()) {
+					noteSheetPara1Run.setText("                We have received a letter dated " + registerRequestVO.getReferenceDate() +" from the "+ registerRequestVO.getReferenceFrom() + "requesting us for nomination of Central Government Counsel in the above matter.");
+				} else {
+					noteSheetPara1Run.setText("                We have received a copy of " + (registerRequestVO.getCaseTypeID() != 78 ? caseVO.getCaseName() : registerRequestVO.getCaseType()) +" from the " + (registerRequestVO.getCourtType() == 1 ? "Office of the Additional Solicitor General of India, High Court of Karnataka for nomination of Central Government Counsel." : "Hon`ble Central Administrative Tribunal, Bangalore for nomination of Central Government Counsel.") );	
+				}
+				 
 				noteSheetPara1Run.setColor(fontColour);
 				noteSheetPara1Run.addCarriageReturn();
 				noteSheetPara1Run.setFontFamily("Verdana");
@@ -1213,20 +1219,125 @@ public class AddDAO {
 				out.close();
 				document.close();
 				
-				/*FileInputStream file = new FileInputStream(new File("D:\\Register\\High Court & CAT Nomination Register.xls"));
+				FileInputStream file = new FileInputStream(new File("D:\\Register\\High Court & CAT Nomination Register.xlsx"));
 
-		            XSSFWorkbook workbook = new XSSFWorkbook(file);
-		            // change every year
-		            XSSFSheet sheet = (registerRequestVO.getCourtType() == 1 ? workbook.getSheetAt(0) : workbook.getSheetAt(6));
+	            XSSFWorkbook workbook = new XSSFWorkbook(file);
+	            // change every year
+	            XSSFSheet sheet = (registerRequestVO.getCourtType() == 1 ? workbook.getSheetAt(0) : workbook.getSheetAt(9));
+	            
+	            Row row = sheet.createRow(sheet.getLastRowNum()+1);
+	            
+	            int columnCount = 0;
+	            
+	            Cell cell = row.createCell(columnCount);
+	            cell.setCellValue((String) registerRequestVO.getFileNumber());
+	            
+	            Cell cell1 = row.createCell(++columnCount);
+	            cell1.setCellValue((String) registerRequestVO.getFiledBy());
+	            
+	            Cell cell2 = row.createCell(++columnCount);
+	            cell2.setCellValue((String) ((registerRequestVO.getCaseTypeID() == 68 || registerRequestVO.getCaseTypeID() == 74) ? registerRequestVO.getCaseNumber() : caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()));
+	            
+	            if(registerRequestVO.getCourtType() == 1) {
+	            	
+	            	Cell cell7 = row.createCell(++columnCount);
+		            cell7.setCellValue((String) registerRequestVO.getFrNumber());
 		            
-		            Cell cell = null;
-		            
-		            cell = sheet.getRow(sheet.getLastRowNum()).getCell(1);
-		            cell.setCellValue(registerRequestVO.getFileNumber());*/
+	            }
+	            
+	            Cell cell3 = row.createCell(++columnCount);
+	            cell3.setCellValue(registerRequestVO.getCaseYear());
+	            
+	            Cell cell4 = row.createCell(++columnCount);
+	            cell4.setCellValue(registerRequestVO.getMinistryID());
+	            
+	            Cell cell5 = row.createCell(++columnCount);
+	            cell5.setCellValue((String) dateformatter(currentdate.toString()));
+	            
+	            Cell cell6 = row.createCell(++columnCount);
+	            if(registerRequestVO.getCounselID() != 0) {
+		            cell6.setCellValue((String) counselResponseVO.getName());
+		            } else {
+		            	cell6.setCellValue((String) "Return");
+		            }
+	            
+	            if(registerRequestVO.getCounselOnRecordID() != 0) {
+	            	Cell cell9 = row.createCell(++columnCount);
+		            cell9.setCellValue((String) counselOnRecordResponseVO.getName());	
+	            }
+	            
+	            file.close();
+	            
+	            FileOutputStream outputStream = new FileOutputStream("D:\\Register\\High Court & CAT Nomination Register.xlsx");
+	            workbook.write(outputStream);
+	            workbook.close();
+	            outputStream.close();
 				
 				responsevo.setResult("Success");
 				responsevo.setMessage("Nomination Letter created Successfully"); 
 				} else {
+					
+					FileInputStream file = new FileInputStream(new File("D:\\Register\\High Court & CAT Nomination Register.xlsx"));
+
+		            XSSFWorkbook workbook = new XSSFWorkbook(file);
+		            // change every year
+		            XSSFSheet sheet = (registerRequestVO.getCourtType() == 1 ? workbook.getSheetAt(0) : workbook.getSheetAt(9));
+		            
+		            int rowCount = sheet.getLastRowNum();
+		            Row row = sheet.createRow(++rowCount);
+		            
+		            int columnCount = 0;
+		            
+		            Cell cell = row.createCell(columnCount);
+		            cell.setCellValue((String) registerRequestVO.getFileNumber());
+		            
+		            Cell cell1 = row.createCell(++columnCount);
+		            cell1.setCellValue((String) registerRequestVO.getFiledBy());
+		            
+		            Cell cell2 = row.createCell(++columnCount);
+		            
+		            CaseVO caseVO = fetchCaseDetails(registerRequestVO.getCaseTypeID());
+		            cell2.setCellValue((String) ((registerRequestVO.getCaseTypeID() == 68 || registerRequestVO.getCaseTypeID() == 74) ? registerRequestVO.getCaseNumber() : caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()));
+		            
+		            if(registerRequestVO.getCourtType() == 1) {
+		            	
+		            	Cell cell7 = row.createCell(++columnCount);
+			            cell7.setCellValue((String) registerRequestVO.getFrNumber());
+			            
+		            }
+		            
+		            Cell cell3 = row.createCell(++columnCount);
+		            cell3.setCellValue(registerRequestVO.getCaseYear());
+		            
+		            Cell cell4 = row.createCell(++columnCount);
+		            cell4.setCellValue(registerRequestVO.getMinistryID());
+		            
+		            Cell cell5 = row.createCell(++columnCount);
+		            cell5.setCellValue((String) dateformatter(currentdate.toString()));
+		            
+		            Cell cell6 = row.createCell(++columnCount);
+		            
+		            if(registerRequestVO.getCounselID() != 0) {
+		            CounselResponseVO counselResponseVO =  fetchCounselDetails(registerRequestVO.getCounselID());
+		            cell6.setCellValue((String) counselResponseVO.getName());
+		            } else {
+		            	cell6.setCellValue((String) "Return");
+		            }
+		            
+		            if(registerRequestVO.getCounselOnRecordID() != 0) {
+		            	Cell cell9 = row.createCell(++columnCount);
+			            
+			            CounselResponseVO counselOnRecordResponseVO =  fetchCounselDetails(registerRequestVO.getCounselOnRecordID());
+			            cell9.setCellValue((String) counselOnRecordResponseVO.getName());	
+		            }
+		            
+		            file.close();
+		            
+		            FileOutputStream outputStream = new FileOutputStream("D:\\Register\\High Court & CAT Nomination Register.xlsx");
+		            workbook.write(outputStream);
+		            workbook.close();
+		            outputStream.close();
+					
 					responsevo.setResult("Success");
 					responsevo.setMessage("Register Updated Successfully");
 				}
