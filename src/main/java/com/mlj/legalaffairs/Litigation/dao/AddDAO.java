@@ -1236,7 +1236,7 @@ public class AddDAO {
 	            cell1.setCellValue((String) registerRequestVO.getFiledBy());
 	            
 	            Cell cell2 = row.createCell(++columnCount);
-	            cell2.setCellValue((String) ((registerRequestVO.getCaseTypeID() == 68 || registerRequestVO.getCaseTypeID() == 74) ? registerRequestVO.getCaseNumber() : caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()));
+	            cell2.setCellValue((String) ((registerRequestVO.getCaseTypeID() == 68 || registerRequestVO.getCaseTypeID() == 74) ? registerRequestVO.getCaseNumber() : caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber() + (registerRequestVO.getNumberOfCases() !=0 ? " Total: "+registerRequestVO.getNumberOfCases() : "")));
 	            
 	            if(registerRequestVO.getCourtType() == 1) {
 	            	
@@ -1297,7 +1297,7 @@ public class AddDAO {
 		            Cell cell2 = row.createCell(++columnCount);
 		            
 		            CaseVO caseVO = fetchCaseDetails(registerRequestVO.getCaseTypeID());
-		            cell2.setCellValue((String) ((registerRequestVO.getCaseTypeID() == 68 || registerRequestVO.getCaseTypeID() == 74) ? registerRequestVO.getCaseNumber() : caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber()));
+		            cell2.setCellValue((String) ((registerRequestVO.getCaseTypeID() == 68 || registerRequestVO.getCaseTypeID() == 74) ? registerRequestVO.getCaseNumber() : caseVO.getAbbrevation()+" No: "+registerRequestVO.getCaseNumber() + (registerRequestVO.getNumberOfCases() !=0 ? " Total: "+registerRequestVO.getNumberOfCases() : "")));
 		            
 		            if(registerRequestVO.getCourtType() == 1) {
 		            	
