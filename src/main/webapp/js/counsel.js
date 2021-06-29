@@ -28,7 +28,7 @@ table = $('#counselTable')
 "pageLength" : 5,
 "scrollX" : true,
 "ajax" : {
-"url":"./counsel/"+sessionStorage.getItem("roleID"),
+"url":"./counsel",
 "type" : "GET",
 "data" : function(search) {
 },
@@ -45,22 +45,13 @@ return json.data;
 },{
 "data" : "counselType"
 },{
-"data" : "termFrom"
-}
-,{
-"data" : "termUpto"
-},{
-	"data" : "address"
+"data" : "address"
 },{
 "data" : "mobileNumber"
 },{
 "data" : "emailID"
 },{
 "data" : "telephoneNumber"
-},{
-"data" : "remarks"
-},{
-	"data" : "courtType"
 }
 ,{
 	"mData" : "action",
@@ -100,7 +91,7 @@ return json.data;
 	]
 });
 
-$("div.headname").html('<h3>Counsel Managemnent</h3>');
+$("div.headname").html('<h3>Counsel Management</h3>');
 
 $("div.addevent").html('<button type="button" id="counselAddButton"'
 		+'class="btn btn-raised btn-primary float-right"'
