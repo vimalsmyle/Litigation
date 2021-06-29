@@ -14,12 +14,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.util.Units;
@@ -81,8 +78,8 @@ public class AddDAO {
 				
 				ministryResponseVO.setMinistryID(rs.getInt("MinistryID"));
 				ministryResponseVO.setMinistryName(rs.getString("MinistryName"));
-				ministryResponseVO.setAddress(rs.getString("Address"));
-				ministryResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress"));
+				ministryResponseVO.setAddress(rs.getString("Address") == null ? "---" : rs.getString("Address"));
+				ministryResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress") == null ? "---" : rs.getString("TypeOfAddress"));
 				ministryResponseVO.setDate(rs.getString("RegisteredDate"));
 				
 				ministryList.add(ministryResponseVO);
@@ -198,8 +195,8 @@ public class AddDAO {
 				departmentResponseVO.setDepartmentID(rs.getInt("DepartmentID"));
 				departmentResponseVO.setDepartmentName(rs.getString("DepartmentName"));
 				departmentResponseVO.setMinistryName(rs.getString("MinistryName"));
-				departmentResponseVO.setAddress(rs.getString("Address"));
-				departmentResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress"));
+				departmentResponseVO.setAddress(rs.getString("Address") == null ? "---" : rs.getString("Address"));
+				departmentResponseVO.setTypeOfAddress(rs.getString("TypeOfAddress") == null ? "---" : rs.getString("TypeOfAddress"));
 				departmentResponseVO.setDate(rs.getString("RegisteredDate"));
 				
 				departmentList.add(departmentResponseVO);

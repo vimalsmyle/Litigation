@@ -1,0 +1,29 @@
+*{
+	padding:0px;
+	margin:0px;
+	border:0px;
+}
+body{
+	background-color: #fff;
+    font-family: "Roboto",sans-serif;
+    font-weight: 300;
+	min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+	
+}
+.footer {
+	background-color: #fff;
+    color: #212529;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    height: 50px;
+    z-index: 10 !important;
+}
+.footer p{
+	text-align: center;
+    width: 100%;
+    margin-bottom: 0px !important;
+}

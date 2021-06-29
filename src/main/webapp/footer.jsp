@@ -20,8 +20,8 @@
 	%>
 <!--Footer Start-->
 	<footer class="navbar footer fixed-bottom footer-light footer-shadow content container-fluid">
-        <p>&copy; 2020 iDigitronics</p>
-    </footer>
+        <p>&copy; 2021 Company Name</p>
+	</footer>
 	<!--Footer end-->
 </body>
 </html>

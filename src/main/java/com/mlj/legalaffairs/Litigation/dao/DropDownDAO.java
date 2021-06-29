@@ -38,7 +38,7 @@ public class DropDownDAO {
 		try {
 			con = getConnection();
 			
-			PreparedStatement pstmt = con.prepareStatement("SELECT CourtID, Abbrevation FROM courtdetails");
+			PreparedStatement pstmt = con.prepareStatement("SELECT CourtID, Abbrevation FROM courtdetails ORDER BY Abbrevation ASC");
 			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -58,7 +58,7 @@ public class DropDownDAO {
 
 		try {
 			con = getConnection();
-			PreparedStatement pstmt = con.prepareStatement("SELECT CaseID, CaseName FROM caseType WHERE CourtTypeID= "+courtID);
+			PreparedStatement pstmt = con.prepareStatement("SELECT CaseID, CaseName FROM caseType WHERE CourtTypeID= "+courtID + " ORDER BY CaseName ASC");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				cases.put(rs.getInt("CaseID"), rs.getString("CaseName"));
@@ -78,7 +78,7 @@ public class DropDownDAO {
 		try {
 			con = getConnection();
 			
-			PreparedStatement pstmt = con.prepareStatement("SELECT MinistryID, MinistryName FROM ministrydetails");
+			PreparedStatement pstmt = con.prepareStatement("SELECT MinistryID, MinistryName FROM ministrydetails ORDER BY MinistryName ASC");
 			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -99,7 +99,7 @@ public class DropDownDAO {
 
 		try {
 			con = getConnection();
-			PreparedStatement pstmt = con.prepareStatement("SELECT DepartmentID, DepartmentName FROM departmentdetails WHERE MinistryID= "+ (ministryID!= 0 ? ministryID : 0));
+			PreparedStatement pstmt = con.prepareStatement("SELECT DepartmentID, DepartmentName FROM departmentdetails WHERE MinistryID= "+ (ministryID!= 0 ? ministryID : 0) +" ORDER BY DepartmentName ASC");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				departments.put(rs.getInt("DepartmentID"), rs.getString("DepartmentName"));
