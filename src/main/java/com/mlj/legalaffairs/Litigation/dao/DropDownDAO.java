@@ -104,6 +104,10 @@ public class DropDownDAO {
 			while (rs.next()) {
 				departments.put(rs.getInt("DepartmentID"), rs.getString("DepartmentName"));
 			}
+			
+			if(!rs.next()) {
+				departments.put(rs.getInt(62), rs.getString("No Department"));
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

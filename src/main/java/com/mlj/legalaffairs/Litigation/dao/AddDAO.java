@@ -1249,7 +1249,7 @@ public class AddDAO {
 	            cell3.setCellValue(registerRequestVO.getCaseYear());
 	            
 	            Cell cell4 = row.createCell(++columnCount);
-	            cell4.setCellValue(registerRequestVO.getMinistryID());
+	            cell4.setCellValue("");
 	            
 	            Cell cell5 = row.createCell(++columnCount);
 	            cell5.setCellValue((String) dateformatter(currentdate.toString()));
@@ -1310,7 +1310,7 @@ public class AddDAO {
 		            cell3.setCellValue(registerRequestVO.getCaseYear());
 		            
 		            Cell cell4 = row.createCell(++columnCount);
-		            cell4.setCellValue(registerRequestVO.getMinistryID());
+		            cell4.setCellValue("");
 		            
 		            Cell cell5 = row.createCell(++columnCount);
 		            cell5.setCellValue((String) dateformatter(currentdate.toString()));
