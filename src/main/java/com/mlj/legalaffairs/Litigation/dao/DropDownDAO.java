@@ -99,16 +99,12 @@ public class DropDownDAO {
 
 		try {
 			con = getConnection();
-			PreparedStatement pstmt = con.prepareStatement("SELECT DepartmentID, DepartmentName FROM departmentdetails WHERE MinistryID= "+ministryID);
+			PreparedStatement pstmt = con.prepareStatement("SELECT DepartmentID, DepartmentName FROM departmentdetails WHERE MinistryID= "+ (ministryID!= 0 ? ministryID : 0));
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				departments.put(rs.getInt("DepartmentID"), rs.getString("DepartmentName"));
 			}
 			
-			if(!rs.next()) {
-				departments.put(rs.getInt(62), rs.getString("No Department"));
-			}
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 		}
