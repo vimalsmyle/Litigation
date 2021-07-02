@@ -38,9 +38,7 @@ return json.data;
 },
 },
 "columns" : [
-                        {
-"data" : "title"
-},{
+{
 "data" : "name"
 },{
 "data" : "counselType"

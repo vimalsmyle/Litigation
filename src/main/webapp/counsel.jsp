@@ -29,14 +29,12 @@
 					style="width: 100%">
 					<thead>
 						<tr>
-							<th>Title</th>
 							<th>Name</th>
 							<th>Type</th>
 							<th>Address</th>
 							<th>Mobile Number</th>
 							<th>Email</th>
 							<th>Telephone Number</th>
-							<th>Date</th>
 							<th>Action</th>
 						</tr>
 					</thead>
