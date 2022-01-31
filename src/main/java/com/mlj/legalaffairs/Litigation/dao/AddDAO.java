@@ -312,12 +312,12 @@ public class AddDAO {
 				
 				counselResponseVO.setCounselID(rs.getInt("CounselID"));
 				counselResponseVO.setTitle(rs.getString("Title"));
-				counselResponseVO.setName(rs.getString("Name"));
+				counselResponseVO.setName(rs.getString("Title")+ ". " +rs.getString("Name"));
 				counselResponseVO.setCounselType(rs.getString("CounselType"));
 				counselResponseVO.setAddress(rs.getString("Address"));
 				counselResponseVO.setMobileNumber(rs.getString("MobileNumber"));
-				counselResponseVO.setEmailID(rs.getString("EmailID"));
-				counselResponseVO.setTelephoneNumber(rs.getString("TelephoneNumber"));
+				counselResponseVO.setEmailID(rs.getString("EmailID") == null ? "---" : rs.getString("EmailID"));
+				counselResponseVO.setTelephoneNumber((rs.getString("TelephoneNumber") == null) ? "---" : rs.getString("TelephoneNumber"));
 				counselResponseVO.setCourtName(rs.getString("CourtName"));
 				
 				counselList.add(counselResponseVO);
