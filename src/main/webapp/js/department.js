@@ -302,7 +302,7 @@ $(window).on('load',
 														.ajax({
 															type : "POST",
 															contentType : "application/json",
-															url : "./department/add1",
+															url : "./department/add",
 															data : JSON
 																	.stringify(data1),
 															dataType : "JSON",

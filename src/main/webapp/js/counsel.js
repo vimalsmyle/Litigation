@@ -50,6 +50,8 @@ return json.data;
 "data" : "emailID"
 },{
 "data" : "telephoneNumber"
+},{
+"data" : "courtName"
 }
 ,{
 	"mData" : "action",
@@ -62,16 +64,16 @@ return json.data;
 		</button>*/
 	//return "<a href='#communityEditModal' class='teal modal-trigger' data-toggle='modal' data-target='#communityEditModal' id='communityEditModal' onclick='getSocietyFormEdit("+row.communityID+")'><i class='material-icons' style='color:#17e9e9'>edit</i></a>"
 		
-		return "<div id = actionfield> <a href=# id=BlockEdit data-toggle=modal data-target=#myBlockEdit onclick='getBlockFormEdit("
+		return "<div id = actionfield> <a href=# id=CounselEdit data-toggle=modal data-target=#myCounselEdit onclick='getCounselFormEdit("
 																	+ row.counselID
 																	+ ")'>"
-																	+ "<i class='material-icons' style='color:#17e9e9'>edit</i>"
+																	+ "<i class='fa fa-edit'></i>"
 																	+ "</a>"
-																	+"<a onclick='getBlockFormDelete("
+																	/*+"<a onclick='getCounselFormDelete("
 																	+ row.counselID
 																	+ ")'>"
-																	+ "<i class='material-icons' style='color:#17e9e9;cursor:pointer;'>delete</i>"
-																	+ "</a></div>"
+																	+ "<i class='fa fa-trash'></i>"
+																	+ "</a>*/+"</div>"
 	}
 	}
 
@@ -108,14 +110,6 @@ $(document)
 				.ready(
 						function() {
 							$('#counselDetails')
-							
-							/*.find('[name="selectcommunityName"]')
-            .selectpicker()
-            .change(function(e) {
-                $('#blockDetails').bootstrapValidator('revalidateField', 'selectcommunityName');
-            })
-            .end()*/
-							
 									.bootstrapValidator(
 											{
 												feedbackIcons : {
@@ -124,14 +118,7 @@ $(document)
 													validating : 'glyphicon glyphicon-refresh'
 												},
 												fields : {
-													/*selectcommunityName: {
-									                    validators: {
-									                        notEmpty: {
-									                            message: 'Please select your native language.'
-									                        }
-									                    }
-									                },*/
-													blockNameAdd : {
+													counselNameAdd : {
 														message : 'Counsel Name is not valid',
 														validators : {
 															notEmpty : {
@@ -148,24 +135,51 @@ $(document)
 															}
 														}
 													},
-													blockLocationAdd : {
-														message : 'Location is not valid',
+													/*
+													termFromAdd : {
+														message : 'Term From is not valid',
+														validators : {
+															 notEmpty: {
+														          message: 'Term From is required and cannot be empty'
+														           },
+														           date: {
+														          message: 'The value is not a valid date',
+														          format: 'yyyy-mm-dd'
+														           }
+														}
+													},
+													
+													termUptoAdd : {
+														message : 'Term Upto is not valid',
+														validators : {
+															 notEmpty: {
+														          message: 'Term Upto is required and cannot be empty'
+														           },
+														           date: {
+														          message: 'The value is not a valid date',
+														          format: 'yyyy-mm-dd'
+														           }
+														}
+													},*/
+													
+													counselAddressAdd : {
+														message : 'Address is not valid',
 														validators : {
 															notEmpty : {
-																message : 'Location is required and cannot be empty'
+																message : 'Address is required and cannot be empty'
 															},
 															stringLength : {
 																min : 4,
 																max : 30,
-																message : 'Locaton must be more than 4 and less than 30 characters long'
+																message : 'Address must be more than 4 and less than 30 characters long'
 															},
 															regexp : {
 																regexp : /^[a-zA-Z ]+$/,
-																message : 'Location can only consist of alphabetical'
+																message : 'Address can only consist of alphabetical'
 															}
 														}
 													},
-													blockMobileAdd : {
+													mobileAdd : {
 														message : 'Mobile is not valid',
 														validators : {
 															notEmpty : {
@@ -177,7 +191,7 @@ $(document)
 															}
 														}
 													},
-													blockEmailAdd : {
+													emailIDAdd : {
 														message : 'Email is not valid',
 														validators : {
 															notEmpty : {
@@ -187,6 +201,36 @@ $(document)
 																regexp : /^[a-zA-Z0-9]+$/,
 																message : 'Community Address can only consist of alphabetical and number'
 															}*/
+														}
+													},
+													telephoneNumberAdd : {
+														message : 'Telephone is not valid',
+														validators : {
+															notEmpty : {
+																message : 'Telephone is required and cannot be empty'
+															},
+															regexp : {
+																regexp : /^[0-9]{10}$/,
+																message : 'Telephone can only consist of number'
+															}
+														}
+													},
+													
+													remarkAdd : {
+														message : 'Remark is not valid',
+														validators : {
+															notEmpty : {
+																message : 'Remark is required and cannot be empty'
+															},
+															stringLength : {
+																min : 4,
+																max : 30,
+																message : 'Remark must be more than 4 and less than 30 characters long'
+															},
+															regexp : {
+																regexp : /^[a-zA-Z ]+$/,
+																message : 'Remark can only consist of alphabetical'
+															}
 														}
 													}
 												}
@@ -204,53 +248,90 @@ $(document)
 											validating : 'glyphicon glyphicon-refresh'
 										},
 										fields : {
-											blockNameEdit : {
-												message : 'Block Name is not valid',
+											counselNameEdit : {
+												message : 'Counsel Name is not valid',
 												validators : {
 													notEmpty : {
-														message : 'Block Name is required and cannot be empty'
+														message : 'Counsel Name is required and cannot be empty'
 													},
 													stringLength : {
 														min : 4,
 														max : 30,
-														message : 'Block Name must be more than 4 and less than 30 characters long'
+														message : 'Counsel Name must be more than 4 and less than 30 characters long'
 													},
 													regexp : {
 														regexp : /^[a-zA-Z][a-zA-Z0-9.,$; ]+$/,
-														message : 'Block Name can only consist of Alphanumaric'
+														message : 'Counsel Name can only consist of Alphanumaric'
 													}
 												}
 											},
-											blockLocationEdit : {
-												message : 'Location is not valid',
+											
+											/*termFromEdit : {
+												message : 'Term From is not valid',
 												validators : {
 													notEmpty : {
-														message : 'Location is required and cannot be empty'
+														message : 'Term From is required and cannot be empty'
 													},
 													stringLength : {
-														min : 6,
+														min : 4,
 														max : 30,
-														message : 'Location must be more than 6 and less than 30 characters long'
+														message : 'Term From must be more than 4 and less than 30 characters long'
+													},
+													regexp : {
+														regexp : /^[a-zA-Z][a-zA-Z0-9.,$; ]+$/,
+														message : 'Term From can only consist of Alphanumaric'
+													}
+												}
+											},
+											
+											termUptoEdit : {
+												message : 'Term Upto is not valid',
+												validators : {
+													notEmpty : {
+														message : 'Term Upto is required and cannot be empty'
+													},
+													stringLength : {
+														min : 4,
+														max : 30,
+														message : 'Term Upto must be more than 4 and less than 30 characters long'
+													},
+													regexp : {
+														regexp : /^[a-zA-Z][a-zA-Z0-9.,$; ]+$/,
+														message : 'Term Upto can only consist of Alphanumaric'
+													}
+												}
+											},*/
+											
+											counselAddressEdit : {
+												message : 'Address is not valid',
+												validators : {
+													notEmpty : {
+														message : 'Address is required and cannot be empty'
+													},
+													stringLength : {
+														min : 4,
+														max : 30,
+														message : 'Address must be more than 4 and less than 30 characters long'
 													},
 													regexp : {
 														regexp : /^[a-zA-Z ]+$/,
-														message : 'Location can only consist of alphabetical'
+														message : 'Address can only consist of alphabetical'
 													}
 												}
 											},
-											blockMobileEdit : {
+											mobileNumberEdit : {
 												message : 'Mobile is not valid',
 												validators : {
 													notEmpty : {
 														message : 'Mobile is required and cannot be empty'
 													},
 													regexp : {
-														regexp : /^\d{10}$/,
+														regexp : /^[0-9]{10}$/,
 														message : 'Mobile can only consist of number'
 													}
 												}
 											},
-											blockEmailEdit : {
+											emailIDEdit : {
 												message : 'Email is not valid',
 												validators : {
 													notEmpty : {
@@ -260,6 +341,37 @@ $(document)
 														regexp : /^[a-zA-Z0-9]+$/,
 														message : 'Community Address can only consist of alphabetical and number'
 													}*/
+												}
+											}
+											,
+											telephoneNumberEdit : {
+												message : 'Telephone is not valid',
+												validators : {
+													notEmpty : {
+														message : 'Telephone is required and cannot be empty'
+													},
+													regexp : {
+														regexp : /^[0-9]{10}$/,
+														message : 'Telephone can only consist of number'
+													}
+												}
+											},
+											
+											remarkEdit : {
+												message : 'Remark is not valid',
+												validators : {
+													notEmpty : {
+														message : 'Remark is required and cannot be empty'
+													},
+													stringLength : {
+														min : 4,
+														max : 30,
+														message : 'Remark must be more than 4 and less than 30 characters long'
+													},
+													regexp : {
+														regexp : /^[a-zA-Z ]+$/,
+														message : 'Remark can only consist of alphabetical'
+													}
 												}
 											}
 										}
@@ -333,37 +445,49 @@ $(document)
 							
 							
 							
-												$(document).on('click', '#blockAdd', function () {
-													 
-												
-												//alert(""+$("#selectcommunityName").val());
-
-												if($("#selectCourtType").val() == -1 || $("#selectCourtType").val() == null || $("#selectCourtType").val() == "Select Court Type"){
+												$(document).on('click', '#counselAdd', function () {
+													if($("#selecttitleAdd").val() == -1 || $("#selecttitleAdd").val() == null || $("#selecttitleAdd").val() == ""){
+														bootbox
+														.alert("Select Title");
+														return false;
+													}
+													
+												if($("#courtIDAdd").val() == -1 || $("#courtIDAdd").val() == null || $("#courtIDAdd").val() == ""){
 													bootbox
 													.alert("Select Court Type");
 													return false;
 												}
 												
-												if($("#selectCounselType").val() == -1 || $("#selectCounselType").val() == null || $("#selectCounselType").val() == "Select Counsel Type"){
+												if($("#counselTypeIDAdd").val() == -1 || $("#counselTypeIDAdd").val() == null || $("#counselTypeIDAdd").val() == ""){
 													bootbox
 													.alert("Select Court Type");
+													return false;
+												}
+												
+												if($("#termFromAdd").val() == -1 || $("#termFromAdd").val() == null || $("#termFromAdd").val() == ""){
+													bootbox
+													.alert("Select Term Form");
+													return false;
+												}
+												
+												if($("#termUptoAdd").val() == -1 || $("#termUptoAdd").val() == null || $("#termUptoAdd").val() == ""){
+													bootbox
+													.alert("Select Term Upto");
 													return false;
 												}
 												
 												var data1 = {}
-												data1["courtType"] = $("#selectCourtType").val();
-												data1["counselType"] = $("#selectCounselType").val();
+												data1["title"] = $("#selecttitleAdd").val();
+												data1["courtID"] = $("#courtIDAdd").val();
+												data1["counselTypeID"] = $("#counselTypeIDAdd").val();
 												data1["name"] = $("#counselNameAdd").val();
 												data1["termFrom"] = $("#termFromAdd").val();
-												data1["termTo"] = $("#termtoAdd").val();
-												data1["address"] = $("#addressAdd").val();
-												data1["mobileNumber"] = $("#mobileNumberAdd").val();
-												data1["emailID"] = $("#emailAdd").val();
+												data1["termUpto"] = $("#termUptoAdd").val();
+												data1["address"] = $("#counselAddressAdd").val();
+												data1["mobileNumber"] = $("#mobileAdd").val();
+												data1["emailID"] = $("#emailIDAdd").val();
 												data1["telephoneNumber"] = $("#telephoneNumberAdd").val();
-												data1["remarks"] = $("#remarksAdd").val();
-												data1["createdByID"] = sessionStorage.getItem("createdByID");
-												data1["loggedInUserID"] = sessionStorage.getItem("userID");
-												data1["roleID"] = sessionStorage.getItem("roleID");
+												data1["remarks"] = $("#remarkAdd").val();
 
 												$('#counselAdd').prop('disabled', true).addClass('disabled').off( "click" );
 												
@@ -431,22 +555,49 @@ $(document)
 							.click(
 									function() {
 
-										var data1 = {}
+										if($("#selecttitleEdit").val() == -1 || $("#selecttitleEdit").val() == null || $("#selecttitleEdit").val() == ""){
+											bootbox
+											.alert("Select Title");
+											return false;
+										}
 										
+									if($("#courtIDEdit").val() == -1 || $("#courtIDEdit").val() == null || $("#courtIDEdit").val() == ""){
+										bootbox
+										.alert("Select Court Type");
+										return false;
+									}
+									
+									if($("#counselTypeIDEdit").val() == -1 || $("#counselTypeIDEdit").val() == null || $("#counselTypeIDEdit").val() == ""){
+										bootbox
+										.alert("Select Counsel Type");
+										return false;
+									}
+									
+									
+									if($("#termFromEdit").val() == -1 || $("#termFromEdit").val() == null || $("#termFromEdit").val() == ""){
+										bootbox
+										.alert("Select Term Form");
+										return false;
+									}
+									
+									if($("#termUptoEdit").val() == -1 || $("#termUptoEdit").val() == null || $("#termUptoEdit").val() == ""){
+										bootbox
+										.alert("Select Term Upto");
+										return false;
+									}
+									
 										var data1 = {}
-										data1["courtType"] = $("#selectCourtType").val();
-										data1["counselType"] = $("#selectCounselType").val();
-										data1["name"] = $("#counselNameAdd").val();
-										data1["termFrom"] = $("#termFromAdd").val();
-										data1["termTo"] = $("#termtoAdd").val();
-										data1["address"] = $("#addressAdd").val();
-										data1["mobileNumber"] = $("#mobileNumberAdd").val();
-										data1["emailID"] = $("#emailAdd").val();
-										data1["telephoneNumber"] = $("#telephoneNumberAdd").val();
-										data1["remarks"] = $("#remarksAdd").val();
-										data1["createdByID"] = sessionStorage.getItem("createdByID");
-										data1["loggedInUserID"] = sessionStorage.getItem("userID");
-										data1["roleID"] = sessionStorage.getItem("roleID");
+										data1["title"] = $("#selecttitleEdit").val();
+										data1["courtID"] = $("#courtIDEdit").val();
+										data1["counselTypeID"] = $("#counselTypeIDEdit").val();
+										data1["name"] = $("#counselNameEdit").val();
+										data1["termFrom"] = $("#termFromEdit").val();
+										data1["termUpto"] = $("#termUptoEdit").val();
+										data1["address"] = $("#counselAddressEdit").val();
+										data1["mobileNumber"] = $("#mobileNumberEdit").val();
+										data1["emailID"] = $("#emailIDEdit").val();
+										data1["telephoneNumber"] = $("#telephoneNumberEdit").val();
+										data1["remarks"] = $("#remarkEdit").val();
 								
 										/*alert("===>"
 												+ JSON.stringify(data1));*/
@@ -509,21 +660,55 @@ function getCounselFormEdit(id) {
 
  // alert(id);
 
-	$.getJSON("./counsel/"+sessionStorage.getItem("roleID")+"/"+sessionStorage.getItem("ID"), function(data) {
+	$.getJSON("./counsel", function(data) {
 		$.each(data.data, function(i, item) {
 			if (id == item.counselID) {
 				
-				$('#communityNameEdit').val(item.communityName).trigger("change");
-				$("#formcomunityName").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
-				$('#blockNameEdit').val(item.blockName).trigger("change");
-				$("#formblockName").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
-				$('#blockLocationEdit').val(item.Location).trigger("change");
-				$("#formblocklocation").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
-			    $('#blockMobileEdit').val(item.mobile).trigger("change");
-				$("#formblockMobile").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
-				$('#blockEmailEdit').val(item.email).trigger("change");
-				$("#formblockEmail").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
-				$("#blockIdhidden").val(item.blockID);
+				$('#selecttitleEdit').val(item.title).trigger("change");
+				$("#formselecttitleEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled");
+				
+				$('#counselNameEdit').val(item.name).trigger("change");
+				$("#formcounselNameEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				
+				
+				$('#courtIDEdit').val(item.courtId).trigger("change");
+				$("#formcourtIDEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled");
+				//counselTypeId(item.courtId);
+				$('#counselTypeIDEdit').val(item.counselTypeId).trigger("change");
+				$("#formcounselTypeIDEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				$('#counselAddressEdit').val(item.address).trigger("change");
+				$("#formcounselAddressEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				
+				
+				$("#formtermFromEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				
+				$("#formtermUptoEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				
+				
+			var date = new Date();
+            var currentMonth = date.getMonth();
+            var currentDate = date.getDate();
+            var currentYear = date.getFullYear();
+			
+			 $('#termFromEdit').datepicker({
+                 autoclose: true,
+                 format: "yyyy-mm-dd"
+             });
+			 
+			 $('#termUptoEdit').datepicker({
+                 autoclose: true,
+                 format: "yyyy-mm-dd"
+             });
+				
+			    $('#mobileNumberEdit').val(item.mobileNumber).trigger("change");
+				$("#formmobileEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				$('#emailIDEdit').val(item.emailID).trigger("change");
+				$("#formemailIDEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled");
+				
+				$('#telephoneNumberEdit').val(item.telephoneNumber).trigger("change");
+				$("#formtelephoneNumberEdit").addClass("group form-group has-feedback has-success bmd-form-group is-filled")
+				
+				$("#counselIdhidden").val(item.counselID);
 			
 				$('#counselEditsave')
 				.attr('disabled',
@@ -537,7 +722,7 @@ function getCounselFormEdit(id) {
 }
 
 
-
+/*
 function getCounselFormDelete(counselId){
 	
 	swal.fire({
@@ -590,4 +775,4 @@ function getCounselFormDelete(counselId){
 		});
 
 	
-}
+}*/

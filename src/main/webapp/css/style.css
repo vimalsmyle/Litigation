@@ -27,3 +27,11 @@ body{
     width: 100%;
     margin-bottom: 0px !important;
 }
+.hideShow{
+	display:none;
+}
+.help-block{
+	color:red;
+	font-size:12px;
+	    display: flex;
+}

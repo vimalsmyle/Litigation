@@ -10,7 +10,7 @@ package com.mlj.legalaffairs.Litigation.request;
 public class DepartmentRequestVO {
 	
 	private int departmentID; 
-	private String DepartmentName; // text box
+	private String departmentName; // text box
 	private int ministryID; // dropdown from backend
 	private String address; // text box
 	private String typeOfAddress; // dropdown...values will mention later...String should be sent to backend
@@ -21,11 +21,12 @@ public class DepartmentRequestVO {
 	public void setDepartmentID(int departmentID) {
 		this.departmentID = departmentID;
 	}
+	
 	public String getDepartmentName() {
-		return DepartmentName;
+		return departmentName;
 	}
 	public void setDepartmentName(String departmentName) {
-		DepartmentName = departmentName;
+		this.departmentName = departmentName;
 	}
 	public int getMinistryID() {
 		return ministryID;

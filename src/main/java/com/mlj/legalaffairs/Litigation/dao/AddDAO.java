@@ -304,7 +304,7 @@ public class AddDAO {
 			
 			counselList = new LinkedList<CounselResponseVO>();
 			
-			pstmt = con.prepareStatement("SELECT cd.CounselID, cd.Title, cd.Name, ct.CounselType, cd.Address, cd.MobileNumber, cd.EmailID, cd.TelephoneNumber, ctd.CourtName FROM counseldetails AS cd LEFT JOIN counselType AS ct ON cd.CounselTypeID = ct.CounselTypeID LEFT JOIN courtdetails AS ctd ON ctd.CourtID = cd.CourtID WHERE cd.Status = 1 ORDER BY Name ASC");
+			pstmt = con.prepareStatement("SELECT cd.CounselID,cd.CourtID,cd.CounselTypeID ,cd.Title, cd.Name, ct.CounselType, cd.Address, cd.MobileNumber, cd.EmailID, cd.TelephoneNumber, ctd.CourtName FROM counseldetails AS cd LEFT JOIN counselType AS ct ON cd.CounselTypeID = ct.CounselTypeID LEFT JOIN courtdetails AS ctd ON ctd.CourtID = cd.CourtID WHERE cd.Status = 1 ORDER BY Name ASC");
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -319,6 +319,8 @@ public class AddDAO {
 				counselResponseVO.setEmailID(rs.getString("EmailID") == null ? "---" : rs.getString("EmailID"));
 				counselResponseVO.setTelephoneNumber((rs.getString("TelephoneNumber") == null) ? "---" : rs.getString("TelephoneNumber"));
 				counselResponseVO.setCourtName(rs.getString("CourtName"));
+				counselResponseVO.setCourtId(rs.getInt("CourtID"));
+				counselResponseVO.setCounselTypeId(rs.getInt("CounselTypeID"));
 				
 				counselList.add(counselResponseVO);
 			}
@@ -440,8 +442,8 @@ public class AddDAO {
 			
 			registerList = new LinkedList<RegisterResponseVO>();
 			String query = "SELECT * FROM <change> <fileYear> = ";
-			query = query.replaceAll("<change>", (courtType == 1 ? "highcourtregister" : "catregister"));
-			pstmt = con.prepareStatement(query.replaceAll("<fileYear>", (year != 0 ? "WHERE FileYear = "+ year : "")));
+			query = query.replaceAll("<change>", (courtType == 1 ? "highcourtregister" : "catregister "));
+			pstmt = con.prepareStatement(query.replaceAll("<fileYear> =", (year != 0 ? " WHERE FileYear = "+ year : "")));
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {

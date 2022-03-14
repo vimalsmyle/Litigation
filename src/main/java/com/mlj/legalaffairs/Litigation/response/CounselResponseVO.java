@@ -24,6 +24,8 @@ public class CounselResponseVO {
 	private String telephoneNumber;
 	private String courtName;
 	private String remarks;
+	private Integer counselTypeId;
+	private Integer courtId;
 	
 	private List<CounselResponseVO> data;
 
@@ -138,5 +140,23 @@ public class CounselResponseVO {
 	public void setCourtName(String courtName) {
 		this.courtName = courtName;
 	}
+
+	public Integer getCounselTypeId() {
+		return counselTypeId;
+	}
+
+	public void setCounselTypeId(Integer counselTypeId) {
+		this.counselTypeId = counselTypeId;
+	}
+
+	public Integer getCourtId() {
+		return courtId;
+	}
+
+	public void setCourtId(Integer courtId) {
+		this.courtId = courtId;
+	}
+	
+	
 
 }

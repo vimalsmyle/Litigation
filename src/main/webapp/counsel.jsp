@@ -3,8 +3,9 @@
 <head>
 
 <meta charset="utf-8">
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 <title>Counsel</title>
 </head>
 <body>
@@ -35,6 +36,7 @@
 							<th>Mobile Number</th>
 							<th>Email</th>
 							<th>Telephone Number</th>
+							<th>Court Name</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -65,10 +67,19 @@
 						<div class="row">
 						
 						<div class="col-md-6">
-								 <div class="group form-group">
+								 <div class="group form-group has-success bmd-form-group is-filled">
 									<label for="text">Title:</label>
-									<input type="text" class="form-control  form-control-sm select2"  name="counselNameAdd"
-										id="counselNameAdd" placeholder = "counsel Name">
+									
+									<select class="form-control  form-control-sm select2"
+										id="selecttitleAdd" name="selecttitleAdd">
+										<option value="">Select Title</option>
+										<option value="Smt">Smt</option>
+										<option value="Shri">Shri</option>
+										<option value="Smt">Smt</option>
+										<option value="Ms">Ms</option>
+										<option value="Mr">Mr</option>
+									</select>
+									
 								  </div>
 								</div>
 								
@@ -79,7 +90,47 @@
 										id="counselNameAdd" placeholder = "counsel Name">
 								  </div>
 								</div>
+								
+								
+								<div class="col-md-6">
+								 <div class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Court ID:</label>
+									<select class="form-control  form-control-sm select2"
+										id="courtIDAdd" name="courtIDAdd" onChange="counselTypeId(this.value)">
+									</select>
+								  </div>
+								</div>
+								
+								
+								
+								<div class="col-md-6">
+								 <div class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Counsel Type ID:</label>
+									<select class="form-control  form-control-sm select2"
+										id="counselTypeIDAdd" name="counselTypeIDAdd">
+									</select>
+								  </div>
+								</div>
+								
+									<div class="col-md-6">
+								 <div class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Term From</label>
+									<input type="text" class="form-control form-control-sm" 
+									name="termFromAdd"
+										id="termFromAdd" placeholder = "Term From">
+								  </div>
+								</div>
 							
+							
+							<div class="col-md-6">
+								 <div class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Term Upto</label>
+									
+									<input type="text" class="form-control form-control-sm" 
+									name="termUptoAdd"
+										id="termUptoAdd" placeholder = "Term Upto">
+								  </div>
+								</div>
 							
 							<div class="col-md-6">
 								 <div class="group form-group">
@@ -88,12 +139,38 @@
 										id="counselAddressAdd" placeholder = "counsel Address">
 								  </div>
 								</div>
-							
+								
+								<div class="col-md-6">
+								 <div class="group form-group">
+									<label for="text">Mobile:</label>
+									<input type="text" class="form-control form-control-sm" name="mobileAdd"
+										id="mobileAdd" placeholder = "mobile">
+								  </div>
+								</div>
+								
+								
+								<div class="col-md-6">
+								 <div class="group form-group">
+									<label for="text">Email ID:</label>
+									<input type="email" class="form-control form-control-sm" name="emailIDAdd"
+										id="emailIDAdd" placeholder = "Email">
+								  </div>
+								</div>
+								
+								
+								<div class="col-md-6">
+								 <div class="group form-group">
+									<label for="text">Telephone Number:</label>
+									<input type="text" class="form-control form-control-sm" name="telephoneNumberAdd"
+										id="telephoneNumberAdd" placeholder = "telephoneNumber">
+								  </div>
+								</div>
+								
 							<div class="col-md-6">
 								<div class="group form-group">
-									<label for="text">Type of Address:</label>
-									<input type="text" class="form-control form-control-sm" name="counselTypeOfAddressAdd"
-										id="counselTypeOfAddressAdd" placeholder = "Community Mobile">
+									<label for="text">Remark:</label>
+									<input type="text" class="form-control form-control-sm" name="remarkAdd"
+										id="remarkAdd" placeholder = "remarkAdd">
 								  </div>
 							</div>
 							
@@ -120,7 +197,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="mycounselEdit" role="dialog">
+	<div class="modal fade" id="myCounselEdit" role="dialog">
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
@@ -133,26 +210,110 @@
 					<form id="counselEdit">
 						<div class="row">
 							<div class="col-md-6">
-								<div id="formcounselName" class="group form-group">
+								 <div id="formselecttitleEdit" class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Title:</label>
+									
+									<select class="form-control  form-control-sm select2"
+										id="selecttitleEdit" name="selecttitleEdit">
+										<option value="">Select Title</option>
+										<option value="Smt">Smt</option>
+										<option value="Shri">Shri</option>
+										<option value="Smt">Smt</option>
+										<option value="Ms">Ms</option>
+										<option value="Mr">Mr</option>
+									</select>
+									
+								  </div>
+								</div>
+								
+							<div class="col-md-6">
+								 <div id="formcounselNameEdit" class="group form-group">
 									<label for="text">Name:</label>
 									<input type="text" class="form-control form-control-sm"  name="counselNameEdit"
 										id="counselNameEdit" placeholder = "counsel Name">
 								  </div>
-							</div>
+								</div>
+								
+								
+								<div class="col-md-6">
+								 <div id="formcourtIDEdit" class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Court ID:</label>
+									<select class="form-control  form-control-sm select2"
+										id="courtIDEdit" name="courtIDEdit" onChange="counselTypeId(this.value)">
+									</select>
+								  </div>
+								</div>
+								
+								
+								
+								<div class="col-md-6">
+								 <div id="formcounselTypeIDEdit" class="group form-group has-success bmd-form-group is-filled">
+									<label for="text">Counsel Type ID:</label>
+									<select class="form-control  form-control-sm select2"
+										id="counselTypeIDEdit" name="counselTypeIDEdit">
+									</select>
+								  </div>
+								</div>
+								
+									<div class="col-md-6">
+								 <div id="formtermFromEdit" class="group form-group">
+									<label for="text">Term From</label>
+									<input type="text" class="form-control form-control-sm" 
+									name="termFromEdit"
+										id="termFromEdit" placeholder = "Term From">
+								  </div>
+								</div>
+							
+							
 							<div class="col-md-6">
-								<div id="formcounselAddress" class="group form-group">
+								 <div id="formtermUptoEdit" class="group form-group">
+									<label for="text">Term Upto</label>
+									
+									<input type="text" class="form-control form-control-sm" 
+									name="termUptoEdit"
+										id="termUptoEdit" placeholder = "Term Upto">
+								  </div>
+								</div>
+							
+							<div class="col-md-6">
+								 <div id="formcounselAddressEdit" class="group form-group">
 									<label for="text">Address:</label>
-									<input type="text" class="form-control form-control-sm"  name="counselAddressEdit"
+									<input type="text" class="form-control form-control-sm" name="counselAddressEdit"
 										id="counselAddressEdit" placeholder = "counsel Address">
 								  </div>
-							</div>
-
-							<div class="col-md-6">
+								</div>
 								
-								<div id="formcounselTypeOfAddress" class="group form-group">
-									<label for="text">Type of address:</label>
-									<input type="text" class="form-control form-control-sm"  name="counselTypeOfAddressEdit"
-										id="counselTypeOfAddressEdit" placeholder = "counsel type of address">
+								<div class="col-md-6">
+								 <div id="formmobileEdit" class="group form-group">
+									<label for="text">Mobile:</label>
+									<input type="text" class="form-control form-control-sm" name="mobileNumberEdit"
+										id="mobileNumberEdit" placeholder = "mobile">
+								  </div>
+								</div>
+								
+								
+								<div class="col-md-6">
+								 <div id="formemailIDEdit" class="group form-group">
+									<label for="text">Email ID:</label>
+									<input type="email" class="form-control form-control-sm" name="emailIDEdit"
+										id="emailIDEdit" placeholder = "Email">
+								  </div>
+								</div>
+								
+								
+								<div class="col-md-6">
+								 <div id="formtelephoneNumberEdit" class="group form-group">
+									<label for="text">Telephone Number:</label>
+									<input type="text" class="form-control form-control-sm" name="telephoneNumberEdit"
+										id="telephoneNumberEdit" placeholder = "telephoneNumber">
+								  </div>
+								</div>
+								
+							<div class="col-md-6">
+								<div id="formremarkEdit" class="group form-group">
+									<label for="text">Remark:</label>
+									<input type="text" class="form-control form-control-sm" name="remarkEdit"
+										id="remarkEdit" placeholder = "remark">
 								  </div>
 							</div>
 							
@@ -185,9 +346,15 @@
 	
 		
 	<script src="js/counsel.js"></script>
+	<script src="js/dropdown.js"></script>
+	
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>      	
+        
 	<script>
 		$(document).ready(function() {
 			var table = $('#datetable').DataTable({
@@ -199,6 +366,25 @@
 					}
 				}
 			});
+			
+			
+			var date = new Date();
+            var currentMonth = date.getMonth();
+            var currentDate = date.getDate();
+            var currentYear = date.getFullYear();
+			
+			 $('#termFromAdd').datepicker({
+                 autoclose: true,
+                 format: "yyyy-mm-dd"
+             });
+			 
+			 $('#termUptoAdd').datepicker({
+                 autoclose: true,
+                 format: "yyyy-mm-dd"
+             });
+			
+			
+			
 		});
 	</script>
 </body>
